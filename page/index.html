@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personality Classification System</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .getstart {
+            text-align: center;
+            margin: 50px auto;
+            /* Adjust the margin as needed */
+            max-width: 600px;
+            /* Adjust the max-width as needed */
+        }
+
+        /* Optionally, you can add styles for the button */
+        .getstart button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #8F00FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .getstart button:hover {
+            background-color: #8F00FF;
+        }
+
+        .image-section {
+            text-align: center;
+        }
+
+        .img {
+            display: inline-block;
+            max-width: 75%;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .welcome-text{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Personality Classification System</h1>
+    </header>
+
+    <section class = "welcome-text">
+        
+        <p>
+            We believe in the power of analyzing speech patterns to understand ourselves better. Our app uses
+            cutting-edge technology to analyze your speech and determine whether you have introverted or extroverted
+            tendencies. Connect with others who share similar patterns and discover a community that understands you.
+        </p>
+    </section>
+
+    <section class="image-section">
+        <img class="img" src="../images/welcome.jpg" alt="Introverted and Extroverted">
+    </section>
+
+    <section>
+        <div class="getstart">
+            <h2>Get Started</h2>
+            <p>Click the button below to start the personality classification system.</p>
+            <button id="getStartedBtn">Get Started</button>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('getStartedBtn').addEventListener('click', function () {
+            window.location.href = 'signup.html';
+        });
+    </script>
+
+    <footer>
+        <p>&copy; 2022 Personality Classification System. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
