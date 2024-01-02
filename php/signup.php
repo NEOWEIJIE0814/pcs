@@ -1,32 +1,29 @@
 <?php
-include 'dbconnect.php';
+
+// Include your database connection file
+include("dbconnect.php");
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get form data
+    $full_name = mysqli_real_escape_string($conn, $_POST["full_name"]);
+    $username = mysqli_real_escape_string($conn, $_POST["username"]);
+    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+    $age = intval($_POST["age"]);
+    $gender = mysqli_real_escape_string($conn, $_POST["gender"]);
+    $password = password_hash($_POST["password"], PASSWORD_DEFAULT); // Hash the password
 
-    // Get the values from the form
-    $username = $_POST["username"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $name = $_POST["name"];
-    $age = $_POST["age"];
-    $gender = $_POST["gender"];
+    // Insert data into the "users" table
+    $query = "INSERT INTO users (full_name, username, email, age, gender, password) VALUES ('$full_name', '$username', '$email', $age, '$gender', '$password')";
 
-    // Prepare and bind the SQL statement
-    $stmt = $conn->prepare("INSERT INTO users (username, email, password, name, age, gender) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssi", $username, $email, $password, $name, $age, $gender);
-
-    // Execute the statement
-    if ($stmt->execute()) {
-        echo "New record created successfully";
+    if (mysqli_query($conn, $query)) {
+        echo "Registration successful!";
     } else {
-        echo "Error: " . $stmt->error;
+        echo "Error: " . $query . "<br>" . mysqli_error($conn);
     }
 
-    // Close the statement
-    $stmt->close();
+    // Close the database connection
+    mysqli_close($conn);
 }
 
-// Close the connection
-$conn->close();
 ?>
