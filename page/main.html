@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCS Music Player</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1{
+      font-weight: bold;
+    }
+
+    #background {
+      flex: 1;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      /* Added to make children stack vertically */
+    }
+
+    .card {
+      width: 400px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+
+    label.upload-btn {
+      background-color: #8F00FF;
+      margin-bottom: 10px;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover,
+    .record-btn:hover,
+    .start-analysis-btn:hover,
+    label.upload-btn:hover {
+      background-color: #6A0080;
+    }
+
+
+    button {
+      background-color: #e0b8ff;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    
+
+    audio {
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .record-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .record-btn {
+      background-color: #8F00FF;
+      color: white;
+      padding: 10px 20px;
+      /* Adjust the padding to match the play button */
+      width: 350px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    .stop-btn {
+      background-color: #e0b8ff;
+      color: black;
+      padding: 10px 20px;
+      /* Adjust the padding to match the play button */
+      width: 350px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    
+    .record-btn:hover {
+      background-color: #6A0080;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Personality Classification System</h1>
+  </header>
+
+  <div id="background">
+    <div class="card">
+      <audio id="audioPlayer" controls=""></audio>
+      <label for="musicFile" class="upload-btn">Upload Speech </label>
+      <input type="file" id="musicFile" accept="audio/*" onchange="updateFileName()">
+      <span id="selectedFileName"></span>
+      <button onclick="playMusic()">Play</button>
+    </div>
+
+    <div class="record-card card">
+      <button class="record-btn" onclick="startRecording()">Record Speech</button>
+      <button class="stop-btn" onclick="stopRecording()">Stop</button>
+    </div>
+
+    <div class="analysis-card card">
+      <button class="start-analysis-btn" onclick="startAnalysis()">Start Analysis</button>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2022 Personality Classification System. All rights reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let mediaRecorder;
+    let audioChunks = [];
+
+    function updateFileName() {
+      var musicFile = document.getElementById("musicFile").files[0];
+      var selectedFileName = document.getElementById("selectedFileName");
+      if (musicFile) {
+        selectedFileName.textContent = "Selected File: " + musicFile.name;
+      } else {
+        selectedFileName.textContent = "";
+      }
+    }
+
+    function playMusic() {
+      var musicFile = document.getElementById("musicFile").files[0];
+      var audioPlayer = document.getElementById("audioPlayer");
+
+      if (musicFile) {
+        audioPlayer.src = URL.createObjectURL(musicFile);
+        audioPlayer.play();
+      }
+    }
+
+    function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function (stream) {
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = function (event) {
+            if (event.data.size > 0) {
+              audioChunks.push(event.data);
+            }
+          };
+
+          mediaRecorder.onstop = function () {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audioPlayer = document.getElementById("audioPlayer");
+            audioPlayer.src = audioUrl;
+            audioPlayer.play();
+            audioChunks = [];
+          };
+
+          mediaRecorder.start();
+        })
+        .catch(function (err) {
+          console.error('Error accessing microphone:', err);
+        });
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+      }
+    }
+
+    function startAnalysis() {
+      // Redirect to the next HTML page (replace 'next_page.html' with the actual filename)
+      window.location.href = 'result.html';
+    }
+
+  </script>
+</body>
+
+</html>
