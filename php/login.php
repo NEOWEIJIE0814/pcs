@@ -24,8 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Verify the password
             if (password_verify($password, $row["password"])) {
                 // Password is correct, set session variables and redirect
-                $_SESSION["user_id"] = $row["user_id"];
+                $_SESSION["user_id"] = $row["userID"];
                 $_SESSION["username"] = $row["username"];
+                echo "Session data: ";
+                var_dump($_SESSION);
+
                 header("Location: ../page/main.html"); // Redirect to your main page
                 exit();
             } else {

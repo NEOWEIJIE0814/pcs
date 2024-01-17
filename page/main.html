@@ -16,7 +16,7 @@
       margin: 0;
     }
 
-    h1{
+    h1 {
       font-weight: bold;
     }
 
@@ -70,7 +70,7 @@
       transition: background-color 0.3s;
     }
 
-    
+
 
     audio {
       margin-bottom: 20px;
@@ -117,7 +117,7 @@
       margin-top: 10px;
     }
 
-    
+
     .record-btn:hover {
       background-color: #6A0080;
     }
@@ -130,10 +130,18 @@
     <h1>Personality Classification System</h1>
   </header>
 
+
+
   <div id="background">
     <div class="card">
-      <audio id="audioPlayer" controls=""></audio>
-      <label for="musicFile" class="upload-btn">Upload Speech </label>
+      <div style="display: flex; align-items: center;">
+        <audio id="audioPlayer" controls=""></audio>
+        <button onclick="clearAudio()" style="background: none; border: none; padding: 0;">
+          <img src="../images/clear.jpg" alt="Clear Audio" style="width: 50px; height: 50px; padding-bottom: 12px;
+          padding-left: 12px;">
+        </button>
+      </div>
+      <label for="musicFile" id="uploadLabel" class="upload-btn">Upload Speech</label>
       <input type="file" id="musicFile" accept="audio/*" onchange="updateFileName()">
       <span id="selectedFileName"></span>
       <button onclick="playMusic()">Play</button>
@@ -158,6 +166,7 @@
   <script>
     let mediaRecorder;
     let audioChunks = [];
+    let audioBlob;
 
     function updateFileName() {
       var musicFile = document.getElementById("musicFile").files[0];
@@ -174,10 +183,25 @@
       var audioPlayer = document.getElementById("audioPlayer");
 
       if (musicFile) {
-        audioPlayer.src = URL.createObjectURL(musicFile);
-        audioPlayer.play();
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const arrayBuffer = e.target.result;
+          const audioBlob = new Blob([arrayBuffer], { type: 'audio/wav' });
+
+          // Push the audio blob directly to the array
+          audioChunks.push(audioBlob);
+
+          // Set the audio player source
+          audioPlayer.src = URL.createObjectURL(audioBlob);
+          audioPlayer.play();
+        };
+
+        // Read the selected file as an ArrayBuffer
+        reader.readAsArrayBuffer(musicFile);
       }
     }
+
+    let isRecording = false;
 
     function startRecording() {
       navigator.mediaDevices.getUserMedia({ audio: true })
@@ -190,11 +214,17 @@
           };
 
           mediaRecorder.onstop = function () {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
             const audioUrl = URL.createObjectURL(audioBlob);
             const audioPlayer = document.getElementById("audioPlayer");
             audioPlayer.src = audioUrl;
+            audioPlayer.load();
             audioPlayer.play();
+
+            // Log the size of the audio blob
+            console.log('Audio Data Length:', audioBlob.size, 'bytes');
+
+            // Clear the audioChunks array for the next recording
             audioChunks = [];
           };
 
@@ -208,12 +238,113 @@
     function stopRecording() {
       if (mediaRecorder && mediaRecorder.state === 'recording') {
         mediaRecorder.stop();
+      } else {
+        console.log('No active recording to stop.');
       }
     }
 
+    mediaRecorder.onstop = function () {
+      isRecording = false;
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audioPlayer = document.getElementById("audioPlayer");
+      audioPlayer.src = audioUrl; // Set the audio player source
+      audioPlayer.load(); // Load the new source
+      audioPlayer.play(); // Play the audio
+
+      // Log the size of the audio blob
+      console.log('Audio Data Length:', audioBlob.size, 'bytes');
+
+      // Clear the audioChunks array for the next recording
+      audioChunks = [];
+
+      // Send the audio blob to the server
+      sendAudioToServer(audioBlob);
+    };
+
+
+    mediaRecorder.onstop = function () {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+      // Push the audio blob directly to the array
+      audioChunks.push(audioBlob);
+
+      // Set the audio player source
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audioPlayer = document.getElementById("audioPlayer");
+      audioPlayer.src = audioUrl;
+      audioPlayer.play();
+
+      // Clear the audioChunks array for the next recording
+      audioChunks = [];
+    };
+
     function startAnalysis() {
+      if (audioBlob) {
+
+        // Send the audio blob to the server
+        sendAudioToServer(audioBlob);
+      } else {
+        console.log('No audio to send.');
+      }
+      if (isRecording) {
+        console.log('Stop the recording before starting the analysis.');
+        return;
+      }
+      if (audioChunks.length > 0) {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+        // Log the size of the audio blob
+        console.log('Audio Data Length:', audioBlob.size, 'bytes');
+
+        // Send the audio blob to the server
+        sendAudioToServer(audioBlob);
+      } else {
+        console.log('No audio to send.');
+      }
+
       // Redirect to the next HTML page (replace 'next_page.html' with the actual filename)
-      window.location.href = 'result.html';
+      // window.location.href = 'result.html';
+    }
+
+    function clearAudio() {
+      var audioPlayer = document.getElementById("audioPlayer");
+      var uploadLabel = document.getElementById("uploadLabel");
+      var selectedFileName = document.getElementById("selectedFileName");
+
+      // Reset the audio player and clear the file input
+      audioPlayer.src = "";
+      document.getElementById("musicFile").value = null;
+
+      // Optionally, reset the label to its original state
+      uploadLabel.textContent = "Upload Speech";
+
+      // Clear the selected file name display
+      selectedFileName.textContent = "";
+    }
+
+    function sendAudioToServer(audioBlob) {
+      const formData = new FormData();
+      formData.append('audio', audioBlob);
+
+      fetch('../php/upload.php', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text(); // Use text() instead of json()
+        })
+        .then(data => {
+          // Log the response data
+          console.log(data);
+        })
+        .catch(error => {
+          // Log and handle the error
+          console.error('Error sending audio to server:', error.message);
+        });
     }
 
   </script>
