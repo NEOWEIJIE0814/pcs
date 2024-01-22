@@ -41,19 +41,50 @@
             margin: 0 auto;
         }
 
-        .welcome-text{
+        .welcome-text {
             text-align: center;
+        }
+
+        header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid white;
+            /* Add a bottom border for a frame effect */
+        }
+
+        header h1 {
+            margin: 0;
+            color: black;
+            flex-grow: 1; /* Allow h1 to take remaining space */
+        }
+
+        header button {
+            background-color: #8F00FF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+
+        header button:hover {
+            background-color: #8F00FF;
         }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Welcome to Personality Classification System</h1>
+        <h1>Personality Classification System</h1>
+        <button onclick="window.location.href='login.html'">Login</button>
+        <button onclick="window.location.href='signup.html'">Sign Up</button>
     </header>
 
-    <section class = "welcome-text">
-        
+    <section class="welcome-text">
+
         <p>
             We believe in the power of analyzing speech patterns to understand ourselves better. Our app uses
             cutting-edge technology to analyze your speech and determine whether you have introverted or extroverted

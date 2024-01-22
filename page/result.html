@@ -5,6 +5,7 @@
     <!-- Your head content here -->
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -74,9 +75,62 @@
             padding: 10px;
         }
 
-        h3{
+        h3 {
             padding-left: 10%;
 
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        #logout-container {
+            display: flex;
+            align-items: center;
+        }
+
+        #logout-icon {
+            font-size: 24px;
+            /* Adjust the icon size as needed */
+            margin-right: 5px;
+            /* Adjust the margin as needed */
+            color: #333;
+            /* Adjust the icon color as needed */
+            cursor: pointer;
+        }
+
+        #logout-text {
+            font-size: 16px;
+            /* Adjust the text size as needed */
+            color: #333;
+            /* Adjust the text color as needed */
+            cursor: pointer;
+        }
+
+        h1 {
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+
+        #background .btn.btn-primary {
+            background-color: #8F00FF;
+            margin-bottom: 10px;
+            color: white;
+            padding: 10px 400px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            /* Remove button border */
+        }
+
+        #background .btn.btn-primary:hover {
+            background-color: #6A0080;
         }
     </style>
 </head>
@@ -85,66 +139,86 @@
 <body>
 
     <header>
+        <div id="logout-container" onclick="logout()">
+            <i class="fas fa-sign-out-alt" id="logout-icon"></i>
+            <span id="logout-text">Log Out</span>
+        </div>
         <h1>Personality Classification System</h1>
     </header>
 
     <h3>Your Analysis Report:</h2>
 
-    <div id="background">
-        <!-- Result Cards -->
-        <div class="card-container">
-            <!-- Result Card 1 - First Part -->
-            <div class="result-card">
-                <h2>Extroverted 70%</h2>
-                <!-- Add content for the first part of Result Card 1 here -->
-                <img src="../images\extrovert.png" alt="Extroverted" height="40%">
-                <p>You might notice a middle-ground pitch tone in your speech. Your speaking rate tends to be moderate,
-                    with a thoughtful and deliberate choice of words.</p>
-            </div>
+        <div id="background">
+            <!-- Result Cards -->
+            <div class="card-container">
+                <!-- Result Card 1 - First Part -->
+                <div class="result-card">
+                    <h2>Extroverted 70%</h2>
+                    <!-- Add content for the first part of Result Card 1 here -->
+                    <img src="../images\extrovert.png" alt="Extroverted" height="40%">
+                    <p>You might notice a middle-ground pitch tone in your speech. Your speaking rate tends to be
+                        moderate,
+                        with a thoughtful and deliberate choice of words.</p>
+                </div>
 
-            <!-- Result Card 1 - Second Part -->
-            <div class="result-card">
-                <h2>Introverted 30%</h2>
-                <!-- Add content for the second part of Result Card 1 here -->
-                <img src="../images/introvert.png" alt="Introverted" height="40%">
-                <p>Your speech might reflect a more expressive pitch tone, leaning towards the higher range. Your
-                    speaking rate is likely to be relatively fast, reflecting an energetic and dynamic communication
-                    style</p>
+                <!-- Result Card 1 - Second Part -->
+                <div class="result-card">
+                    <h2>Introverted 30%</h2>
+                    <!-- Add content for the second part of Result Card 1 here -->
+                    <img src="../images/introvert.png" alt="Introverted" height="40%">
+                    <p>Your speech might reflect a more expressive pitch tone, leaning towards the higher range. Your
+                        speaking rate is likely to be relatively fast, reflecting an energetic and dynamic communication
+                        style</p>
+                </div>
+            </div>
+            <div class="card-container">
+                <!-- Result Card 2 -->
+                <div class="sound-card">
+                    <h2>Pitch</h2>
+                    <!-- Add content for the second result card here -->
+                    <img src="../images/pitch.png" alt="Pitch Graph">
+                    <p>With a higher extroverted component, your speech have a more varied pitch.</p>
+                </div>
+
+                <div class="sound-card">
+                    <h2>Tone</h2>
+                    <!-- Add content for the second result card here -->
+                    <img src="../images/newtone.png" alt="Tone Graph">
+                    <p>The tone may be more expressive and outgoing due to the dominant extroverted component.</p>
+                </div>
+
+                <div class="sound-card">
+                    <h2>Speaking Rate</h2>
+                    <!-- Add content for the second result card here -->
+                    <img src="../images/speakingrate.png" alt="Tone Graph">
+                    <p>The speaking rate may lean towards a moderate to fast pace. Extroverts often engage in more rapid
+                        and
+                        lively communication.</p>
+                </div>
             </div>
         </div>
-        <div class="card-container">
-            <!-- Result Card 2 -->
-            <div class="sound-card">
-                <h2>Pitch</h2>
-                <!-- Add content for the second result card here -->
-                <img src="../images/pitch.png" alt="Pitch Graph">
-                <p>With a higher extroverted component, your speech have a more varied pitch.</p>
-            </div>
 
-            <div class="sound-card">
-                <h2>Tone</h2>
-                <!-- Add content for the second result card here -->
-                <img src="../images/newtone.png" alt="Tone Graph">
-                <p>The tone may be more expressive and outgoing due to the dominant extroverted component.</p>
-            </div>
-
-            <div class="sound-card">
-                <h2>Speaking Rate</h2>
-                <!-- Add content for the second result card here -->
-                <img src="../images/speakingrate.png" alt="Tone Graph">
-                <p>The speaking rate may lean towards a moderate to fast pace. Extroverts often engage in more rapid and
-                    lively communication.</p>
-            </div>
+        <div id="background">
+            <button class="btn btn-primary" onclick="location.href='main.html'">Upload Other Speech</button>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2022 Personality Classification System. All rights reserved.</p>
-    </footer>
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2022 Personality Classification System. All rights reserved.</p>
+        </footer>
 
-    <!-- Your scripts and Bootstrap JS inclusion here -->
+        <!-- Your scripts and Bootstrap JS inclusion here -->
+        <script>
+            function logout() {
+                var confirmLogout = confirm("Are you sure you want to log out?");
 
+                // If the user clicks OK in the confirmation dialog, log out
+                if (confirmLogout) {
+                    // Navigate to index.html
+                    window.location.href = 'index.html';
+                }
+            }
+        </script>
 </body>
 
 </html>
