@@ -29,7 +29,7 @@ def extract_features(audio_file):
     return pitch_mean, speaking_rate, loudness
 
 # Example usage
-audio_files = glob('../speechsample/intreduce/*.wav')
+audio_files = glob('../speechsample/*.wav')
 
 # Create or open the CSV file for writing
 with open('extracted_features.csv', 'w', newline='') as csvfile:

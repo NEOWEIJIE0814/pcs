@@ -29,8 +29,8 @@ def extract_features(audio_file):
     return pitch_mean, speaking_rate, loudness
 
 # Example usage
-audio_files = glob('D:\speechsample\intreduce\*.wav')
-src = audio_files[1]  # Choose a specific audio file
+audio_files = glob('../speechsample/*.wav')
+src = audio_files[0]  # Choose a specific audio file
 print(src)
 print("Audio File:", src)
 pitch, speech_rate, loudness = extract_features(src)
