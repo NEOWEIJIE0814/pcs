@@ -2,6 +2,7 @@ import csv
 import librosa
 import numpy as np
 from glob import glob
+import os
 import pyloudnorm as pyln
 
 def extract_features(audio_file):
@@ -36,12 +37,14 @@ with open('extracted_features.csv', 'w', newline='') as csvfile:
     # Define CSV writer
     writer = csv.writer(csvfile)
     # Write header row
-    writer.writerow(['Audio File', 'Pitch (Hz)', 'Speech Rate (Words Per Minute)', 'Average Loudness (dB)', 'Label'])
+    writer.writerow(['Pitch (Hz)', 'Speech Rate (Words Per Minute)', 'Average Loudness (dB)', 'Label'])
     # Extract features for each audio file and write to CSV
     for audio_file in audio_files:
         pitch, speech_rate, loudness = extract_features(audio_file)
         # Determine label based on filename
-        label = 'extrovert' if 'extreduce' in audio_file else 'introvert'
-        writer.writerow([audio_file, pitch, speech_rate, loudness, label])
+        # 0 - extrovert
+        # 1 - introvert
+        label = 0 if 'extreduce' in audio_file else 1
+        writer.writerow([pitch, speech_rate, loudness, label])
 
 print("Feature extraction completed and saved to 'extracted_features.csv'.")
