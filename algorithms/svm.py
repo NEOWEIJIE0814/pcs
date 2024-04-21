@@ -67,7 +67,7 @@ class SVM_classifier():
         
         y_hat = np.where(predicted_labels <= -1, 0, 1)
         
-        return y_hat()
+        return y_hat
         
         
     
@@ -125,19 +125,48 @@ X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=
 
 classifier = SVM_classifier(learning_rate=0.001, no_of_iteration=1000, lambda_parameter=0.01)
 
-#Training SVM with data
+#--Training SVM with data
 
 classifier.fit(X_train, Y_train)
 
-# Model Evaluation
-# Accuracy score
-# Accuracy on training data
+# --Model Evaluation
+# --Accuracy score
+# --Accuracy on training data
 
 X_train_prediction = classifier.predict(X_train)
 training_data_accuracy = accuracy_score(Y_train, X_train_prediction)
 
-print("accuracy score: ", training_data_accuracy)
+#print("accuracy score on train data: ", training_data_accuracy)
 
+# --Accuracy on test data
 
+X_test_prediction = classifier.predict(X_test)
+training_data_accuracy = accuracy_score(Y_test, X_test_prediction)
 
+#print("accuracy score on test data: ", training_data_accuracy)
 
+#---------------------------------------------------------------
+#--Building a predictive system
+
+input_data = (21.90977,210.6122796672837,-26.711063007447496)
+
+# --change the input data to numpy array
+
+input_data_as_np = np.array(input_data)
+
+#-- reshape the array
+
+input_data_reshaped = input_data_as_np.reshape(1, -1)
+
+#standardizing the input data
+std_data = scaler.transform(input_data_reshaped)
+print(std_data)
+
+prediction = classifier.predict(std_data)
+print(prediction)
+
+if(prediction[0] == 0):
+    print("The person is extrovert")
+    
+else:
+    print("The person is introvert")
