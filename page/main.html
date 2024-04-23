@@ -214,6 +214,7 @@
       var selectedFileName = document.getElementById("selectedFileName");
       if (musicFile) {
         selectedFileName.textContent = "Selected File: " + musicFile.name;
+        
       } else {
         selectedFileName.textContent = "";
       }
@@ -300,7 +301,7 @@
       audioChunks = [];
 
       // Send the audio blob to the server
-      sendAudioToServer(audioBlob);
+      //sendAudioToServer(audioBlob);
     };
 
 
@@ -325,6 +326,7 @@
 
         // Send the audio blob to the server
         sendAudioToServer(audioBlob);
+
       } else {
         console.log('No audio to send.');
       }
@@ -339,13 +341,13 @@
         console.log('Audio Data Length:', audioBlob.size, 'bytes');
 
         // Send the audio blob to the server
-        sendAudioToServer(audioBlob);
+        //sendAudioToServer(audioBlob);
       } else {
         console.log('No audio to send.');
       }
 
-      // Redirect to the next HTML page (replace 'next_page.html' with the actual filename)
-      window.location.href = 'result.html';
+      // Redirect to the next HTML page (replace 'result.html' with the actual filename)
+      //window.location.href = '../php/upload.php';
     }
 
     function clearAudio() {

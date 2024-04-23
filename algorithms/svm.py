@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-
+import pickle
 
 class SVM_classifier():
     
@@ -128,6 +128,11 @@ classifier = SVM_classifier(learning_rate=0.001, no_of_iteration=1000, lambda_pa
 #--Training SVM with data
 
 classifier.fit(X_train, Y_train)
+
+#--Save the model
+filename = 'svm_model.sav'
+pickle.dump(classifier, open(filename, 'wb'))
+
 
 # --Model Evaluation
 # --Accuracy score
