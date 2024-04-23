@@ -24,12 +24,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Write the audio data to a temporary file
         $tempAudioFile = tempnam(sys_get_temp_dir(), 'audio_');
-        file_put_contents($tempAudioFile, $audioData);
+        file_put_contents($tempAudioFile, $_FILES['audio']);
 
         // Send the path of the temporary audio file to the Python script
         $pythonScriptPath = '../algorithms/implement.py'; // Adjust the path accordingly
         $output = '';
-        exec("python3 $pythonScriptPath '$tempAudioFile' 2>&1", $output);
+        exec("python $pythonScriptPath '$tempAudioFile' 2>&1", $output);
         $output = trim(implode("\n", $output));
 
         // Prepare the SQL statement
