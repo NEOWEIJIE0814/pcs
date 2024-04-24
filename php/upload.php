@@ -26,14 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         file_put_contents($tempAudioFile, $audioData);
 
         // Send the path of the temporary audio file to the Python script
-        $pythonScriptPath = './algorithms/implement.py'; // Adjust the path accordingly
-        $output = '';
-        exec("python $pythonScriptPath '$tempAudioFile' 2>&1", $output);
-        
+        $pythonScriptPath = '../algorithms/implement.py'; // Adjust the path accordingly
+        exec("C:\Users\Windows10\Desktop\xampp\htdocs\pcs\.venv\Scripts\python.exe $pythonScriptPath '$tempAudioFile' 2>&1", $output);
+
+        echo "output is: ";
+        var_dump($output); // Print the output for debugging
+
+        // Convert the array to a string for database storage
+        $resultString = implode(', ', $output);
 
         // Prepare the SQL statement
         $stmt = $conn->prepare("INSERT INTO audio (userID, data, content_type, results) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $userID, $audioData, $contentType, $output);
+        $stmt->bind_param("ssss", $userID, $audioData, $contentType, $resultString);
 
         // Execute the SQL statement
         if ($stmt->execute()) {
