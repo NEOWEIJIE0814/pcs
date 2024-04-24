@@ -88,6 +88,7 @@ if __name__ == "__main__":
         label = 'extrovert' if predicted_label == 0 else 'introvert'
 
         #  Print the predicted label
+        print(label)
         sys.stdout.write(label)
         sys.stdout.flush()
 
