@@ -1,10 +1,9 @@
-
+import sys
 import librosa
 import numpy as np
 import pyloudnorm as pyln
 from sklearn.preprocessing import StandardScaler
 import pickle
-
 
 class SVM_classifier():
     # Initialize SVM classifier with hyperparameters
@@ -54,25 +53,25 @@ def extract_features(audio_file):
     loudness = meter.integrated_loudness(y)
     return np.array([pitch_mean, speaking_rate, loudness])
 
-audio_file = ('/Users/Windows10/Downloads/audio_1714045263703.wav')
+if __name__ == "__main__":
+    
+    # Get the audio file path from command-line arguments
+    audio_file_path = str(sys.argv[1])
 
+    # Extract features from the audio
+    features = extract_features(audio_file_path)
 
-# Extract features from the audio
-features = extract_features(audio_file)
+    # Load the SVM model
+    loaded_model = pickle.load(open('./algorithms/svm_model.sav', 'rb'))
 
-# Load the SVM model
-loaded_model = pickle.load(open('./algorithms/svm_model.sav', 'rb'))
+    # Reshape the input data
+    input_data_reshaped = features.reshape(1, -1)
 
-# Reshape the input data
-input_data_reshaped = features.reshape(1, -1)
+    # Use the model to predict the label for the extracted features
+    predicted_label = loaded_model.predict(input_data_reshaped)
 
-# Use the model to predict the label for the extracted features
-predicted_label = loaded_model.predict(input_data_reshaped)
+    # Map the predicted label to 'introvert' or 'extrovert'
+    label = 'extrovert' if predicted_label == 0 else 'introvert'
 
-# Map the predicted label to 'introvert' or 'extrovert'
-label = 'extrovert' if predicted_label == 0 else 'introvert'
-
-#  Print the predicted label
-print(label)
-       
-
+    # Print the predicted label
+    print(label)

@@ -21,23 +21,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userID = $_SESSION['user_id']; // Change this based on your actual session variable
         echo "User ID: " . $userID;
 
-        // Write the audio data to a temporary file
-        $tempAudioFile = tempnam(sys_get_temp_dir(), 'audio_');
-        file_put_contents($tempAudioFile, $audioData);
+        // Define the file path
+        $filePath = $_POST['filePath'];
+
 
         // Send the path of the temporary audio file to the Python script
-        $pythonScriptPath = '../algorithms/implement.py'; // Adjust the path accordingly
-        exec("d:/AI/anaconda3/python.exe $pythonScriptPath '$tempAudioFile' 2>&1", $output);
+        $pythonScriptPath = '../algorithms/newimplement.py'; // Adjust the path accordingly
+        exec("d:/AI/anaconda3/python.exe $pythonScriptPath '$filePath' 2>&1", $output);
 
         echo "output is: ";
         var_dump($output); // Print the output for debugging
 
         // Convert the array to a string for database storage
         $resultString = implode(', ', $output);
+    
 
         // Prepare the SQL statement
-        $stmt = $conn->prepare("INSERT INTO audio (userID, data, content_type, results) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $userID, $audioData, $contentType, $resultString);
+        $stmt = $conn->prepare("INSERT INTO audio (userID, data, content_type, path, results) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $userID, $audioData, $contentType, $filePath, $resultString);
 
         // Execute the SQL statement
         if ($stmt->execute()) {

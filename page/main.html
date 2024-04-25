@@ -323,6 +323,7 @@
 
     function startAnalysis() {
       if (audioBlob) {
+        
 
         // Send the audio blob to the server
         sendAudioToServer(audioBlob);
@@ -367,8 +368,21 @@
     }
 
     function sendAudioToServer(audioBlob) {
+        //save audio to file locally
+        const currentDate = new Date();
+        const fileName = `audio_${currentDate.getTime()}.wav`; // File name with current timestamp
+        const filePath = `/Users/Windows10/Downloads/${fileName}`; // File path with directory and file name
+        console.log(filePath) // print filepath in console
+
+        // Create a new anchor element
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(audioBlob); // Set the href to the audio blob
+        link.download = fileName; // Set the download attribute to the file name
+        link.click(); // Programmatically trigger the download
+
       const formData = new FormData();
       formData.append('audio', audioBlob);
+      formData.append('filePath', filePath); // Append the filePath
 
       fetch('../php/upload.php', {
         method: 'POST',
