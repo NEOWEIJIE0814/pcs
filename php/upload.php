@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Send the path of the temporary audio file to the Python script
         $pythonScriptPath = '../algorithms/implement.py'; // Adjust the path accordingly
-        exec("C:\Users\Windows10\Desktop\xampp\htdocs\pcs\.venv\Scripts\python.exe $pythonScriptPath '$tempAudioFile' 2>&1", $output);
+        exec("d:/AI/anaconda3/python.exe $pythonScriptPath '$tempAudioFile' 2>&1", $output);
 
         echo "output is: ";
         var_dump($output); // Print the output for debugging
