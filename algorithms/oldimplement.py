@@ -56,7 +56,7 @@ def extract_features(audio_file):
     loudness = meter.integrated_loudness(y)
     return np.array([pitch_mean, speaking_rate, loudness])
 
-audio_file = ('./speechsample/intreduce29.wav')
+audio_file = ('./speechsample/intreduce30.wav')
 
 audio_data = pd.read_csv('./algorithms/extracted_features.csv') #New add
 features = audio_data.drop(columns='Label', axis=1) #New add

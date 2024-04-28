@@ -2,7 +2,9 @@ import sys
 import os
 import librosa
 import numpy as np
+import pandas as pd
 import pyloudnorm as pyln
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import pickle
 
@@ -63,6 +65,18 @@ if __name__ == "__main__":
     # Get the audio file path from command-line arguments
     audio_file_path = sys.argv[1]
     
+    audio_data = pd.read_csv('../algorithms/extracted_features.csv') #New add
+    features = audio_data.drop(columns='Label', axis=1) #New add
+    target = audio_data['Label'] #New add
+    #data standardization
+    scaler = StandardScaler() #New add
+    scaler.fit(features) #New add
+    standardized_data = scaler.transform(features) #New add
+    features = standardized_data
+    target = audio_data['Label']#New add
+    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=0.2, random_state=2) #New add
+    classifier = SVM_classifier(learning_rate=0.001, no_of_iteration=1000, lambda_parameter=0.01) #New add
+    classifier.fit(X_train, Y_train) #New add
 
     try:
         file_stats = os.stat(audio_file_path)
@@ -84,22 +98,26 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Load the SVM model
-    model_file_path = '../algorithms/svm_model.sav'
-    if not os.path.exists(model_file_path):
-        print("Error: Model file not found.")
-        sys.exit(1)
+    #model_file_path = '../algorithms/svm_model.sav'
+    #if not os.path.exists(model_file_path):
+       # print("Error: Model file not found.")
+       # sys.exit(1)
 
-    try:
-        loaded_model = pickle.load(open(model_file_path, 'rb'))
-    except Exception as e:
-        print("Error loading model:", e)
-        sys.exit(1)
+    #try:
+    #    loaded_model = pickle.load(open(model_file_path, 'rb'))
+    #except Exception as e:
+    #    print("Error loading model:", e)
+    #    sys.exit(1)
 
     # Use the model to predict the label for the extracted features
-    predicted_label = loaded_model.predict(features.reshape(1, -1))
+    #predicted_label = loaded_model.predict(features.reshape(1, -1))
 
+    input_data_reshaped = features.reshape(1, -1)
+    std_data = scaler.transform(input_data_reshaped)
+    prediction = classifier.predict(std_data)
+    
     # Map the predicted label to 'introvert' or 'extrovert'
-    label = 'extrovert' if predicted_label == 0 else 'introvert'
+    label = 'extrovert' if prediction == 0 else 'introvert'
 
     # Print the predicted label
     print(label)
