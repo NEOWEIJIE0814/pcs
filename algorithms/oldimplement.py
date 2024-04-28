@@ -54,7 +54,7 @@ def extract_features(audio_file):
     loudness = meter.integrated_loudness(y)
     return np.array([pitch_mean, speaking_rate, loudness])
 
-audio_file = ('/Users/Windows10/Downloads/audio_1714045263703.wav')
+audio_file = ('C:/Users/Windows10/Downloads/audio_1714278218365.wav')
 
 
 # Extract features from the audio

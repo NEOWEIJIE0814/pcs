@@ -305,21 +305,7 @@
     };
 
 
-    mediaRecorder.onstop = function () {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-
-      // Push the audio blob directly to the array
-      audioChunks.push(audioBlob);
-
-      // Set the audio player source
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audioPlayer = document.getElementById("audioPlayer");
-      audioPlayer.src = audioUrl;
-      audioPlayer.play();
-
-      // Clear the audioChunks array for the next recording
-      audioChunks = [];
-    };
+    
 
     function startAnalysis() {
       if (audioBlob) {
@@ -335,17 +321,7 @@
         console.log('Stop the recording before starting the analysis.');
         return;
       }
-      if (audioChunks.length > 0) {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-
-        // Log the size of the audio blob
-        console.log('Audio Data Length:', audioBlob.size, 'bytes');
-
-        // Send the audio blob to the server
-        //sendAudioToServer(audioBlob);
-      } else {
-        console.log('No audio to send.');
-      }
+      
 
       // Redirect to the next HTML page (replace 'result.html' with the actual filename)
       //window.location.href = '../php/upload.php';
@@ -371,8 +347,9 @@
         //save audio to file locally
         const currentDate = new Date();
         const fileName = `audio_${currentDate.getTime()}.wav`; // File name with current timestamp
-        const filePath = `/Users/Windows10/Downloads/${fileName}`; // File path with directory and file name
-        console.log(filePath) // print filepath in console
+        const filePath = `C:/Users/Windows10/Downloads/${fileName}`; // File path with directory and file name
+        const path = filePath;
+        console.log(path) // print filepath in console
 
         // Create a new anchor element
         const link = document.createElement('a');
@@ -382,7 +359,7 @@
 
       const formData = new FormData();
       formData.append('audio', audioBlob);
-      formData.append('filePath', filePath); // Append the filePath
+      formData.append('filePath', path); // Append the filePath
 
       fetch('../php/upload.php', {
         method: 'POST',

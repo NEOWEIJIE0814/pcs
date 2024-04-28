@@ -24,8 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Define the file path
         $filePath = $_POST['filePath'];
 
-
-        // Send the path of the temporary audio file to the Python script
+        // Send the path  to the Python script
         $pythonScriptPath = '../algorithms/newimplement.py'; // Adjust the path accordingly
         exec("d:/AI/anaconda3/python.exe $pythonScriptPath '$filePath' 2>&1", $output);
 

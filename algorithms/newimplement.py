@@ -1,4 +1,5 @@
 import sys
+import os
 import librosa
 import numpy as np
 import pyloudnorm as pyln
@@ -6,7 +7,6 @@ from sklearn.preprocessing import StandardScaler
 import pickle
 
 class SVM_classifier():
-    # Initialize SVM classifier with hyperparameters
     def __init__(self, learning_rate, no_of_iteration, lambda_parameter):
         self.learning_rate = learning_rate
         self.no_of_iteration = no_of_iteration
@@ -14,7 +14,6 @@ class SVM_classifier():
         self.w = None
         self.b = None
 
-    # Fit the dataset to the SVM classifier
     def fit(self, X, Y):
         self.m, self.n = X.shape
         self.w = np.zeros(self.n)
@@ -22,7 +21,6 @@ class SVM_classifier():
         for i in range(self.no_of_iteration):
             self.update_weights(X, Y)
 
-    # Update weights and bias values
     def update_weights(self, X, Y):
         y_label = np.where(Y <= 0, -1, 1)
         for index, x_i in enumerate(X):
@@ -36,42 +34,65 @@ class SVM_classifier():
             self.w -= self.learning_rate * dw
             self.b -= self.learning_rate * db
 
-    # Predict the label for a given input value
     def predict(self, X):
         output = np.dot(X, self.w) - self.b
         predicted_labels = np.sign(output)
         return np.where(predicted_labels <= -1, 0, 1)
 
 def extract_features(audio_file):
-    y, sr = librosa.load(audio_file, sr=None)
-    pitches, _ = librosa.core.piptrack(y=y, sr=sr)
-    pitch_mean = pitches.mean()
-    non_silent_frames = np.count_nonzero(librosa.effects.split(y, top_db=20))
-    speech_duration = librosa.get_duration(y=y, sr=sr)
-    speaking_rate = non_silent_frames / speech_duration * 60
-    meter = pyln.Meter(sr)
-    loudness = meter.integrated_loudness(y)
-    return np.array([pitch_mean, speaking_rate, loudness])
+    try:
+        y, sr = librosa.load(audio_file, sr=None)
+        pitches, _ = librosa.core.piptrack(y=y, sr=sr)
+        pitch_mean = pitches.mean()
+        non_silent_frames = np.count_nonzero(librosa.effects.split(y, top_db=20))
+        speech_duration = librosa.get_duration(y=y, sr=sr)
+        speaking_rate = non_silent_frames / speech_duration * 60
+        meter = pyln.Meter(sr)
+        loudness = meter.integrated_loudness(y)
+        return np.array([pitch_mean, speaking_rate, loudness])
+    except Exception as e:
+        print("Error extracting features:", e)
+        return None
 
 if __name__ == "__main__":
-    
+    # Check if audio file path is provided
+    if len(sys.argv) != 2:
+        print("Usage: python script.py <audio_file_path>")
+        sys.exit(1)
+
     # Get the audio file path from command-line arguments
-    audio_file_path = str(sys.argv[1])
+    audio_file_path = sys.argv[0]
+    print("The audio path is:", audio_file_path)
+
+    # Check if the audio file exists
+    if not os.path.exists(audio_file_path):
+        print("Error: Audio file not found.")
+        sys.exit(1)
 
     # Extract features from the audio
     features = extract_features(audio_file_path)
 
-    # Load the SVM model
-    loaded_model = pickle.load(open('./algorithms/svm_model.sav', 'rb'))
+    if features is None:
+        print("Error: Failed to extract features.")
+        sys.exit(1)
 
-    # Reshape the input data
-    input_data_reshaped = features.reshape(1, -1)
+    # Load the SVM model
+    model_file_path = './algorithms/svm_model.sav'
+    if not os.path.exists(model_file_path):
+        print("Error: Model file not found.")
+        sys.exit(1)
+
+    try:
+        loaded_model = pickle.load(open(model_file_path, 'rb'))
+    except Exception as e:
+        print("Error loading model:", e)
+        sys.exit(1)
 
     # Use the model to predict the label for the extracted features
-    predicted_label = loaded_model.predict(input_data_reshaped)
+    predicted_label = loaded_model.predict(features.reshape(1, -1))
 
     # Map the predicted label to 'introvert' or 'extrovert'
     label = 'extrovert' if predicted_label == 0 else 'introvert'
 
     # Print the predicted label
-    print(label)
+    print("Predicted personality type:", label)
