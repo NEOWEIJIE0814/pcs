@@ -62,11 +62,11 @@ if __name__ == "__main__":
 
     # Get the audio file path from command-line arguments
     audio_file_path = sys.argv[1]
-    print("The audio path is:", audio_file_path)
+    
 
     try:
         file_stats = os.stat(audio_file_path)
-        print("File permissions:", oct(file_stats.st_mode & 0o777))
+        
     except FileNotFoundError:
         print("File not found")
 
@@ -77,6 +77,7 @@ if __name__ == "__main__":
 
     # Extract features from the audio
     features = extract_features(audio_file_path)
+    print(features)
 
     if features is None:    
         print("Error: Failed to extract features.")
@@ -101,4 +102,4 @@ if __name__ == "__main__":
     label = 'extrovert' if predicted_label == 0 else 'introvert'
 
     # Print the predicted label
-    print("Predicted personality type:", label)
+    print(label)

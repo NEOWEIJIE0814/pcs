@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn import svm
 import pickle
 
 class SVM_classifier():
@@ -75,7 +76,7 @@ class SVM_classifier():
         
 #loading the data from the csv file to pandas dataframe
 
-audio_data = pd.read_csv('./extracted_features.csv')
+audio_data = pd.read_csv('./algorithms/extracted_features.csv')
    
 #print the first 5 row of the dataframe
 audio_data.head()
@@ -125,13 +126,15 @@ X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=
 
 classifier = SVM_classifier(learning_rate=0.001, no_of_iteration=1000, lambda_parameter=0.01)
 
+#Choosing the kernel linear
+#classifier = svm.SVC(kernel = 'linear')
 #--Training SVM with data
 
 classifier.fit(X_train, Y_train)
 
 #--Save the model
-filename = 'svm_model.sav'
-pickle.dump(classifier, open(filename, 'wb'))
+#filename = 'svm_model.sav'
+#pickle.dump(classifier, open(filename, 'wb'))
 
 
 # --Model Evaluation
@@ -141,19 +144,19 @@ pickle.dump(classifier, open(filename, 'wb'))
 X_train_prediction = classifier.predict(X_train)
 training_data_accuracy = accuracy_score(Y_train, X_train_prediction)
 
-#print("accuracy score on train data: ", training_data_accuracy)
+print("accuracy score on train data: ", training_data_accuracy)
 
 # --Accuracy on test data
 
 X_test_prediction = classifier.predict(X_test)
 training_data_accuracy = accuracy_score(Y_test, X_test_prediction)
 
-#print("accuracy score on test data: ", training_data_accuracy)
+print("accuracy score on test data: ", training_data_accuracy)
 
 #---------------------------------------------------------------
 #--Building a predictive system
 
-input_data = (21.90977,210.6122796672837,-26.711063007447496)
+input_data = (5.70097876, 269.77405144, -30.33256377)
 
 # --change the input data to numpy array
 

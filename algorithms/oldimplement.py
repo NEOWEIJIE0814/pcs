@@ -3,7 +3,9 @@ import librosa
 import numpy as np
 import pyloudnorm as pyln
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 import pickle
+import pandas as pd
 
 
 class SVM_classifier():
@@ -54,25 +56,41 @@ def extract_features(audio_file):
     loudness = meter.integrated_loudness(y)
     return np.array([pitch_mean, speaking_rate, loudness])
 
-audio_file = ('C:/Users/Windows10/Downloads/audio_1714278218365.wav')
+audio_file = ('./speechsample/intreduce29.wav')
+
+audio_data = pd.read_csv('./algorithms/extracted_features.csv') #New add
+features = audio_data.drop(columns='Label', axis=1) #New add
+target = audio_data['Label'] #New add
+#data standardization
+scaler = StandardScaler() #New add
+scaler.fit(features) #New add
+standardized_data = scaler.transform(features) #New add
+features = standardized_data
+target = audio_data['Label']#New add
+X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=0.2, random_state=2) #New add
+classifier = SVM_classifier(learning_rate=0.001, no_of_iteration=1000, lambda_parameter=0.01) #New add
+classifier.fit(X_train, Y_train) #New add
 
 
 # Extract features from the audio
 features = extract_features(audio_file)
 
 # Load the SVM model
-loaded_model = pickle.load(open('./algorithms/svm_model.sav', 'rb'))
+#loaded_model = pickle.load(open('./algorithms/svm_model.sav', 'rb'))
 
 # Reshape the input data
 input_data_reshaped = features.reshape(1, -1)
+std_data = scaler.transform(input_data_reshaped)
+prediction = classifier.predict(std_data)
 
 # Use the model to predict the label for the extracted features
-predicted_label = loaded_model.predict(input_data_reshaped)
+#predicted_label = loaded_model.predict(input_data_reshaped)
 
 # Map the predicted label to 'introvert' or 'extrovert'
-label = 'extrovert' if predicted_label == 0 else 'introvert'
+label = 'extrovert' if prediction == 0 else 'introvert'
 
 #  Print the predicted label
+print(features)
 print(label)
        
 

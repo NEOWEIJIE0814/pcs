@@ -2,7 +2,6 @@ import csv
 import librosa
 import numpy as np
 from glob import glob
-import os
 import pyloudnorm as pyln
 
 def extract_features(audio_file):
@@ -31,6 +30,7 @@ def extract_features(audio_file):
 
 # Example usage
 audio_files = glob('../speechsample/*.wav')
+audio_file = audio_files[59]
 
 # Create or open the CSV file for writing
 with open('extracted_features.csv', 'w', newline='') as csvfile:
