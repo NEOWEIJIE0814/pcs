@@ -55,14 +55,20 @@ def extract_features(audio_file):
         return None
 
 if __name__ == "__main__":
-    # Check if audio file path is provided
+    # Check if audio file path is provided YES
     if len(sys.argv) != 2:
         print("Usage: python script.py <audio_file_path>")
         sys.exit(1)
 
     # Get the audio file path from command-line arguments
-    audio_file_path = sys.argv[0]
+    audio_file_path = sys.argv[1]
     print("The audio path is:", audio_file_path)
+
+    try:
+        file_stats = os.stat(audio_file_path)
+        print("File permissions:", oct(file_stats.st_mode & 0o777))
+    except FileNotFoundError:
+        print("File not found")
 
     # Check if the audio file exists
     if not os.path.exists(audio_file_path):
@@ -72,12 +78,12 @@ if __name__ == "__main__":
     # Extract features from the audio
     features = extract_features(audio_file_path)
 
-    if features is None:
+    if features is None:    
         print("Error: Failed to extract features.")
         sys.exit(1)
 
     # Load the SVM model
-    model_file_path = './algorithms/svm_model.sav'
+    model_file_path = '../algorithms/svm_model.sav'
     if not os.path.exists(model_file_path):
         print("Error: Model file not found.")
         sys.exit(1)

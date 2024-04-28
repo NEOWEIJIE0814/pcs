@@ -23,10 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Define the file path
         $filePath = $_POST['filePath'];
+        
 
         // Send the path  to the Python script
         $pythonScriptPath = '../algorithms/newimplement.py'; // Adjust the path accordingly
-        exec("d:/AI/anaconda3/python.exe $pythonScriptPath '$filePath' 2>&1", $output);
+        exec("d:/AI/anaconda3/python.exe $pythonScriptPath $filePath 2>&1", $output);
 
         echo "output is: ";
         var_dump($output); // Print the output for debugging
