@@ -255,20 +255,6 @@
             }
           };
 
-          mediaRecorder.onstop = function () {
-            audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audioPlayer = document.getElementById("audioPlayer");
-            audioPlayer.src = audioUrl;
-            audioPlayer.load();
-            audioPlayer.play();
-
-            // Log the size of the audio blob
-            console.log('Audio Data Length:', audioBlob.size, 'bytes');
-
-            // Clear the audioChunks array for the next recording
-            audioChunks = [];
-          };
 
           mediaRecorder.start();
         })
@@ -310,7 +296,6 @@
     function startAnalysis() {
       if (audioBlob) {
         
-
         // Send the audio blob to the server
         sendAudioToServer(audioBlob);
 
@@ -320,6 +305,15 @@
       if (isRecording) {
         console.log('Stop the recording before starting the analysis.');
         return;
+      }
+      if (audioChunks.length > 0) {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        // Log the size of the audio blob
+        console.log('Audio Data Length:', audioBlob.size, 'bytes');
+        // Send the audio blob to the server
+        sendAudioToServer(audioBlob);
+      } else {
+        console.log('No audio to send.');
       }
       
 
@@ -344,6 +338,7 @@
     }
 
     function sendAudioToServer(audioBlob) {
+      
         //save audio to file locally
         const currentDate = new Date();
         const fileName = `audio_${currentDate.getTime()}.wav`; // File name with current timestamp
