@@ -9,23 +9,19 @@ var_dump($_SESSION);
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        // Check if file is uploaded
-        if (!isset($_FILES['audio']) || $_FILES['audio']['error'] !== UPLOAD_ERR_OK) {
-            throw new Exception('Error uploading audio file');
+        // Check if file path is received
+        if (!isset($_POST['filePath'])) {
+            throw new Exception('File path not received');
         }
 
-        // Get the audio data from the uploaded file
-        $audioData = file_get_contents($_FILES['audio']['tmp_name']);
-        $contentType = $_FILES['audio']['type'];
+        // Get the file path from the form
+        $filePath = $_POST['filePath'];
+
         // Get the user ID from the session or wherever it's stored
         $userID = $_SESSION['user_id']; // Change this based on your actual session variable
         echo "User ID: " . $userID;
 
-        // Define the file path
-        $filePath = $_POST['filePath'];
-        
-
-        // Send the path  to the Python script
+        // Send the path to the Python script
         $pythonScriptPath = '../algorithms/newimplement.py'; // Adjust the path accordingly
         exec("d:/AI/anaconda3/python.exe $pythonScriptPath $filePath ", $output);
 
@@ -34,11 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Convert the array to a string for database storage
         $resultString = implode(', ', $output);
-    
 
         // Prepare the SQL statement
-        $stmt = $conn->prepare("INSERT INTO audio (userID, data, content_type, path, results) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $userID, $audioData, $contentType, $filePath, $resultString);
+        $stmt = $conn->prepare("INSERT INTO audio (userID, path, results) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $userID, $filePath, $resultString);
 
         // Execute the SQL statement
         if ($stmt->execute()) {

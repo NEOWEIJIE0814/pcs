@@ -208,6 +208,7 @@
     let mediaRecorder;
     let audioChunks = [];
     let audioBlob;
+    let audioPlayer = document.getElementById("audioPlayer");
 
     function updateFileName() {
       var musicFile = document.getElementById("musicFile").files[0];
@@ -246,50 +247,36 @@
     let isRecording = false;
 
     function startRecording() {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(function (stream) {
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.ondataavailable = function (event) {
-            if (event.data.size > 0) {
-              audioChunks.push(event.data);
-            }
-          };
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function (stream) {
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.ondataavailable = function (event) {
+        if (event.data.size > 0) {
+          audioChunks.push(event.data);
+        }
+      };
+      mediaRecorder.start();
+    })
+    .catch(function (err) {
+      console.error('Error accessing microphone:', err);
+    });
+}
 
-
-          mediaRecorder.start();
-        })
-        .catch(function (err) {
-          console.error('Error accessing microphone:', err);
-        });
-    }
-
-    function stopRecording() {
-      if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop();
-      } else {
-        console.log('No active recording to stop.');
-      }
-    }
-
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
     mediaRecorder.onstop = function () {
-      isRecording = false;
+      // Convert audio chunks to a single Blob
       const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audioPlayer = document.getElementById("audioPlayer");
-      audioPlayer.src = audioUrl; // Set the audio player source
-      audioPlayer.load(); // Load the new source
-      audioPlayer.play(); // Play the audio
-
-      // Log the size of the audio blob
-      console.log('Audio Data Length:', audioBlob.size, 'bytes');
-
-      // Clear the audioChunks array for the next recording
-      audioChunks = [];
-
-      // Send the audio blob to the server
-      //sendAudioToServer(audioBlob);
+      // Set the audio player source to the recorded audio
+      audioPlayer.src = URL.createObjectURL(audioBlob);
     };
+  } else {
+    console.log('No active recording to stop.');
+  }
+}
 
+    
 
     
 
@@ -317,7 +304,7 @@
       }
       
 
-      // Redirect to the next HTML page (replace 'result.html' with the actual filename)
+      // Redirect to the next HTML page (replace to 'result.html' with the actual filename)
       //window.location.href = '../php/upload.php';
     }
 
@@ -353,7 +340,7 @@
         link.click(); // Programmatically trigger the download
 
       const formData = new FormData();
-      formData.append('audio', audioBlob);
+      // formData.append('audio', audioBlob);
       formData.append('filePath', path); // Append the filePath
 
       fetch('../php/upload.php', {
