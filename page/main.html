@@ -292,7 +292,8 @@ function stopRecording() {
 
     function startAnalysis() {
       if (audioBlob) {
-        
+        // Show loading icon
+       document.getElementById("background").innerHTML = '<i class="fas fa-spinner fa-spin loading-icon"></i><p>Analysis is in progress...<br>Please wait patiently.</p>';
         // Send the audio blob to the server
         sendAudioToServer(audioBlob);
 
@@ -304,6 +305,8 @@ function stopRecording() {
         return;
       }
       if (audioChunks.length > 0) {
+        // Show loading icon
+       document.getElementById("background").innerHTML = '<i class="fas fa-spinner fa-spin loading-icon"></i><p>Analysis is in progress...<br>Please wait patiently.</p>';
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
         // Log the size of the audio blob
         console.log('Audio Data Length:', audioBlob.size, 'bytes');
@@ -313,14 +316,6 @@ function stopRecording() {
         console.log('No audio to send.');
       }
       
-
-       // Show loading icon
-       document.getElementById("background").innerHTML = '<i class="fas fa-spinner fa-spin loading-icon"></i><p>Analysis is in progress...<br>Please wait patiently.</p>';
-
-      // After 30 seconds, navigate to the next HTML page
-      setTimeout(function() {
-         window.location.href = 'result.html';
-      }, 20000); // 20 seconds in milliseconds
     }
 
     function clearAudio() {
@@ -371,6 +366,7 @@ function stopRecording() {
         .then(data => {
           // Log the response data
           console.log(data);
+          window.location.href = 'result.html';
         })
         .catch(error => {
           // Log and handle the error

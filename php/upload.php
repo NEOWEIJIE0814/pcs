@@ -34,9 +34,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $loudness = $output[2];
         $results = $output[3];
 
+        $pythonGraphPath = '../algorithms/graph.py';
+
+        // Execute the Python script and capture the output
+        exec("d:/AI/anaconda3/python.exe $pythonGraphPath $filePath", $graph);
+
+        echo "Graph path is";
+        var_dump($graph); // Print the output for debugging
+
+        // Extract the graph path from the output
+        $graphPath = end($graph); // Assuming the graph path is the last element in the output array
+
         // Prepare the SQL statement
-        $stmt = $conn->prepare("INSERT INTO audio (userID, path, pitch, speakingRate, loudness, results) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $userID, $filePath, $pitch, $speakingRate, $loudness, $results);
+        $stmt = $conn->prepare("INSERT INTO audio (userID, path, pitch, speakingRate, loudness, results, graphPath) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $userID, $filePath, $pitch, $speakingRate, $loudness, $results, $graphPath);
 
         // Execute the SQL statement
         if ($stmt->execute()) {
