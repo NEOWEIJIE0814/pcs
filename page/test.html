@@ -95,6 +95,54 @@
         #background .btn.btn-primary:hover {
             background-color: #6A0080;
         }
+        .sound-card,
+        .result-card {
+            
+            /* Adjust the width as needed */
+            padding: 5%;
+            height: auto;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+
+
+        .result-card:not(:last-child) {
+            margin-right: 4%;
+            /* Adjust the margin as needed */
+        }
+
+        .sound-card h2,
+        .result-card h2 {
+            color: #8F00FF;
+        }
+
+        h2{
+          color: #8F00FF;
+          text-align: center;
+        }
+
+        .sound-card p,
+        .result-card p {
+            text-align: justify;
+        }
+
+        .sound-card img,
+        .result-card img {
+            height: 200px;
+            margin-bottom: 4px;
+            /* Set image height to 100% to fill the entire height of the card */
+        }
+
+        .card-container {
+            
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
 
 </style>
 </header>
@@ -110,13 +158,31 @@
     <h1>Personality Classification System</h1>
   </header>
 
-    <div id="audioInfo">
-        <!-- Display audio information here -->
+  <div class="card-container">
+    <!-- Result Card 1 - First Part -->
+    <div class="result-card">
+      <h2>Audio Results</h2>
+        
     </div>
-    
-    <div>
-      <h2>Graph Image</h2>
+
+    <div class="result-card">
+      <h2>Audio Information</h2>
+      
+      
+  </div>
+
+</div>
+
+<div class="card-container">
+  
+  <div class="graph-card">
+    <h2>Graph:</h2>
       <img id="graphContainer" src="" alt="Graph">
+    
+    
+</div>
+
+      
   </div>
 
   <div id="background">
@@ -155,22 +221,27 @@
 
         // Function to display audio information on the page
         function displayAudioInfo(audioInfo) {
-            // Get the container element
-            var audioInfoContainer = document.getElementById('audioInfo');
+    // Get the container elements for both result cards
+    var leftResultCard = document.querySelectorAll('.result-card')[0];
+    var rightResultCard = document.querySelectorAll('.result-card')[1];
 
-            // Create HTML elements to display the audio information
-            var html = '<h2>Audio Information</h2>' +
-                '<p><strong>Pitch:</strong> ' + audioInfo.pitch + '</p>' +
-                '<p><strong>Speaking Rate:</strong> ' + audioInfo.speakingRate + '</p>' +
-                '<p><strong>Loudness:</strong> ' + audioInfo.loudness + '</p>' +
-                '<p><strong>Results:</strong> ' + audioInfo.results + '</p>' ;
+    // Create HTML elements for the left result card (audio results)
+    var leftHtml = '<h2>Audio Results is: </h2>' +
+        '<h2>' + audioInfo.results + '</h2>';
 
-            // Set the HTML content of the container
-            audioInfoContainer.innerHTML = html;
+    // Create HTML elements for the right result card (pitch, speaking rate, loudness)
+    var rightHtml = '<h2>Audio Features: </h2>' +
+        '<p><strong>i) Pitch: </strong> ' + audioInfo.pitch + '</p>' +
+        '<p><strong>ii) Speaking Rate: </strong> ' + audioInfo.speakingRate + '</p>' +
+        '<p><strong>iii) Loudness: </strong> ' + audioInfo.loudness + '</p>';
 
-            // Set the graph image source
-            graphContainer.src = audioInfo.graphPath;
-        }
+    // Set the HTML content of the left and right result cards
+    leftResultCard.innerHTML = leftHtml;
+    rightResultCard.innerHTML = rightHtml;
+
+    // Set the graph image source
+    graphContainer.src = audioInfo.graphPath;
+}
 
         function logout() {
           var confirmLogout = confirm("Are you sure you want to log out?");
