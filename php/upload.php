@@ -51,6 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the SQL statement
         if ($stmt->execute()) {
+            // Retrieve the auto-generated audio ID
+            $audioID = $conn->insert_id;
+            // Store the audio ID in the session
+            $_SESSION['audioID'] = $audioID;
             // Query executed successfully
             echo json_encode(['success' => true, 'message' => 'Audio stored successfully']);
         } else {

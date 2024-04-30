@@ -65,10 +65,11 @@ def plot_audio_features(audio_file):
      # Save the plot
     now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     save_path = f"C:/Users/Windows10/Desktop/xampp/htdocs/pcs/audiographs/graph_{now}.png"
+    relative_path = f"../audiographs/graph_{now}.png"
     
     try:
         plt.savefig(save_path)
-        print(save_path)
+        print(relative_path)
     except Exception as e:
         print("Error saving plot:", e)
     

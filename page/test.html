@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Result</title>
+    <!-- Add any additional stylesheets, scripts, or libraries here -->
+</head>
+
+<body>
+    <div id="audioInfo">
+        <!-- Display audio information here -->
+    </div>
+    
+    <div>
+      <h2>Graph Image</h2>
+      <img id="graphContainer" src="" alt="Graph">
+  </div>
+
+    <button onclick="fetchAudioInfo()">View Result</button>
+
+    <script>
+        // Function to fetch audio information from get_audio.php
+        function fetchAudioInfo() {
+            // Send a GET request to get_audio.php
+            fetch('../php/getaudio.php')
+                .then(response => response.json())
+                .then(data => {
+                    // Check if the request was successful
+                    if (data.success) {
+                        // Display the audio information on the page
+                        displayAudioInfo(data.audio);
+                    } else {
+                        // If the request failed, display an error message
+                        console.error('Failed to fetch audio information:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching audio information:', error);
+                });
+        }
+
+        // Function to display audio information on the page
+        function displayAudioInfo(audioInfo) {
+            // Get the container element
+            var audioInfoContainer = document.getElementById('audioInfo');
+
+            // Create HTML elements to display the audio information
+            var html = '<h2>Audio Information</h2>' +
+                '<p><strong>Pitch:</strong> ' + audioInfo.pitch + '</p>' +
+                '<p><strong>Speaking Rate:</strong> ' + audioInfo.speakingRate + '</p>' +
+                '<p><strong>Loudness:</strong> ' + audioInfo.loudness + '</p>' +
+                '<p><strong>Results:</strong> ' + audioInfo.results + '</p>' +
+                '<p><strong>Graph Path:</strong> ' + audioInfo.graphPath + '</p>';
+
+            // Set the HTML content of the container
+            audioInfoContainer.innerHTML = html;
+
+            // Set the graph image source
+            graphContainer.src = audioInfo.graphPath;
+        }
+    </script>
+</body>
+
+</html>
