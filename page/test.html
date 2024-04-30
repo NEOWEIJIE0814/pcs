@@ -186,8 +186,11 @@
   </div>
 
   <div id="background">
-    <button class="btn btn-primary" onclick="fetchAudioInfo()">View Result</button>
+    <button class="btn btn-primary" onclick="fetchAudioInfo()"> View Result</button>
   </div>
+  <div id="background">
+    <button class="btn btn-primary" onclick="location.href='main.html'">Upload Other Speech</button>
+</div>
 
     
 
@@ -226,8 +229,18 @@
     var rightResultCard = document.querySelectorAll('.result-card')[1];
 
     // Create HTML elements for the left result card (audio results)
-    var leftHtml = '<h2>Audio Results is: </h2>' +
+    var leftHtml = '<h2>Audio Results is: </h2>' ;
+
+    // Check if the results contain "extrovert"
+    if (audioInfo.results.toLowerCase().includes('extrovert')) {
+        // If "extrovert" is found, display the extrovert image
+        leftHtml += '<img src="../images/extrovert.png" alt="Extrovert Image">'+
         '<h2>' + audioInfo.results + '</h2>';
+    } else if (audioInfo.results.toLowerCase().includes('introvert')) {
+        // If "introvert" is found, display the introvert image
+        leftHtml += '<img src="../images/introvert.png" alt="Introvert Image">'+
+        '<h2>' + audioInfo.results + '</h2>';
+    }
 
     // Create HTML elements for the right result card (pitch, speaking rate, loudness)
     var rightHtml = '<h2>Audio Features: </h2>' +
