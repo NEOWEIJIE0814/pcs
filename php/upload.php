@@ -28,12 +28,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "output is: ";
         var_dump($output); // Print the output for debugging
 
-        // Convert the array to a string for database storage
-        $resultString = implode(', ', $output);
+        // Extract individual elements from the output array
+        $pitch = $output[0];
+        $speakingRate = $output[1];
+        $loudness = $output[2];
+        $results = $output[3];
 
         // Prepare the SQL statement
-        $stmt = $conn->prepare("INSERT INTO audio (userID, path, results) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $userID, $filePath, $resultString);
+        $stmt = $conn->prepare("INSERT INTO audio (userID, path, pitch, speakingRate, loudness, results) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $userID, $filePath, $pitch, $speakingRate, $loudness, $results);
 
         // Execute the SQL statement
         if ($stmt->execute()) {

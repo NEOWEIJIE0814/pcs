@@ -158,6 +158,16 @@
       flex-grow: 1;
       text-align: center;
     }
+
+    /* Add a custom style for the loading icon */
+    .loading-icon {
+      font-size: 100px; /* Adjust the font size to make the icon larger */
+      color: #6A0080; /* Adjust the color of the icon */
+   }
+
+   
+  
+
   </style>
 </head>
 
@@ -304,8 +314,13 @@ function stopRecording() {
       }
       
 
-      // Redirect to the next HTML page (replace to 'result.html' with the actual filename)
-      //window.location.href = '../php/upload.php';
+       // Show loading icon
+       document.getElementById("background").innerHTML = '<i class="fas fa-spinner fa-spin loading-icon"></i><p>Analysis is in progress...<br>Please wait patiently.</p>';
+
+      // After 30 seconds, navigate to the next HTML page
+      setTimeout(function() {
+         window.location.href = 'result.html';
+      }, 20000); // 20 seconds in milliseconds
     }
 
     function clearAudio() {

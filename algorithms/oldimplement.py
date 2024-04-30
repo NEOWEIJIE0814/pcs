@@ -56,6 +56,14 @@ def extract_features(audio_file):
     loudness = meter.integrated_loudness(y)
     return np.array([pitch_mean, speaking_rate, loudness])
 
+def calculate_percentage(predictions):
+    total_samples = len(predictions)
+    introvert_count = sum(predictions)
+    extrovert_count = total_samples - introvert_count
+    introvert_percentage = (introvert_count / total_samples) * 100
+    extrovert_percentage = (extrovert_count / total_samples) * 100
+    return introvert_percentage, extrovert_percentage
+
 audio_file = ('./speechsample/intreduce30.wav')
 
 audio_data = pd.read_csv('./algorithms/extracted_features.csv') #New add
@@ -82,6 +90,14 @@ features = extract_features(audio_file)
 input_data_reshaped = features.reshape(1, -1)
 std_data = scaler.transform(input_data_reshaped)
 prediction = classifier.predict(std_data)
+
+# show percentage
+# Calculate the percentage of introvert and extrovert
+introvert_percentage, extrovert_percentage = calculate_percentage(prediction)
+    
+# Print the percentages
+print("Percentage of Introvert:", introvert_percentage)
+print("Percentage of Extrovert:", extrovert_percentage)
 
 # Use the model to predict the label for the extracted features
 #predicted_label = loaded_model.predict(input_data_reshaped)

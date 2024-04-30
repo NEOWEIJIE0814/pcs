@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     # Extract features from the audio
     features = extract_features(audio_file_path)
-    print(features)
+    #print(features)
 
     if features is None:    
         print("Error: Failed to extract features.")
@@ -119,5 +119,12 @@ if __name__ == "__main__":
     # Map the predicted label to 'introvert' or 'extrovert'
     label = 'extrovert' if prediction == 0 else 'introvert'
 
+    
+    # Print the pitch_mean
+    print(features[0])
+    # Print the speaking_rate
+    print(features[1])
+    # Print the loudness
+    print(features[2])
     # Print the predicted label
     print(label)
