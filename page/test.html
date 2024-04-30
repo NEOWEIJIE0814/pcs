@@ -1,14 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Result</title>
-    <!-- Add any additional stylesheets, scripts, or libraries here -->
-</head>
+<header>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCS Music Player</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Custom styles */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 5px;
+      padding-top: 4px;
+      background-color: #8F00FF;
+      color: white;
+    }
+
+    h1 {
+      font-weight: bold;
+      line-height: 1.2;
+      margin: 0;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    header nav.navbar-brand {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    #logout-container {
+      display: flex;
+      align-items: center;
+    }
+
+    #logout-icon {
+      font-size: 24px;
+      /* Adjust the icon size as needed */
+      margin-right: 5px;
+      /* Adjust the margin as needed */
+      color: white;
+      /* Adjust the icon color as needed */
+      cursor: pointer;
+    }
+
+    #logout-text {
+      font-size: 16px;
+      /* Adjust the text size as needed */
+      color: white;
+      /* Adjust the text color as needed */
+      cursor: pointer;
+    }
+
+    #background {
+        flex: 1;
+        background-color: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+    }
+
+    #background .btn.btn-primary {
+            background-color: #8F00FF;
+            margin-bottom: 10px;
+            color: white;
+            padding: 10px 400px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            /* Remove button border */
+        }
+
+        #background .btn.btn-primary:hover {
+            background-color: #6A0080;
+        }
+
+</style>
+</header>
 
 <body>
+  
+  <!-- Header -->
+  <header>
+    <div id="logout-container" onclick="logout()">
+      <i class="fas fa-sign-out-alt" id="logout-icon"></i>
+      <span id="logout-text">Log Out</span>
+    </div>
+    <h1>Personality Classification System</h1>
+  </header>
+
     <div id="audioInfo">
         <!-- Display audio information here -->
     </div>
@@ -18,11 +119,22 @@
       <img id="graphContainer" src="" alt="Graph">
   </div>
 
-    <button onclick="fetchAudioInfo()">View Result</button>
+  <div id="background">
+    <button class="btn btn-primary" onclick="fetchAudioInfo()">View Result</button>
+  </div>
+
+    
+
+    <!-- Footer -->
+  <footer>
+    <p>&copy; 2022 Personality Classification System. All rights reserved.</p>
+  </footer>
 
     <script>
         // Function to fetch audio information from get_audio.php
         function fetchAudioInfo() {
+          
+          
             // Send a GET request to get_audio.php
             fetch('../php/getaudio.php')
                 .then(response => response.json())
@@ -51,14 +163,23 @@
                 '<p><strong>Pitch:</strong> ' + audioInfo.pitch + '</p>' +
                 '<p><strong>Speaking Rate:</strong> ' + audioInfo.speakingRate + '</p>' +
                 '<p><strong>Loudness:</strong> ' + audioInfo.loudness + '</p>' +
-                '<p><strong>Results:</strong> ' + audioInfo.results + '</p>' +
-                '<p><strong>Graph Path:</strong> ' + audioInfo.graphPath + '</p>';
+                '<p><strong>Results:</strong> ' + audioInfo.results + '</p>' ;
 
             // Set the HTML content of the container
             audioInfoContainer.innerHTML = html;
 
             // Set the graph image source
             graphContainer.src = audioInfo.graphPath;
+        }
+
+        function logout() {
+          var confirmLogout = confirm("Are you sure you want to log out?");
+
+          // If the user clicks OK in the confirmation dialog, log out
+          if (confirmLogout) {
+            // Navigate to index.html
+            window.location.href = 'index.html';
+          }
         }
     </script>
 </body>
