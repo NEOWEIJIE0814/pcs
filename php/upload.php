@@ -1,4 +1,6 @@
 <?php
+
+ini_set('max_execution_time', 600);
 // Include the database connection
 include 'dbconnect.php';
 
