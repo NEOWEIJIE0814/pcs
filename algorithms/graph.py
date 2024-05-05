@@ -37,36 +37,34 @@ def plot_audio_features(audio_file):
         speaking_rates.append(speaking_rate)
 
     # Plot the graphs
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(12, 6))  # Reduce the figure height
 
     # Plot pitch
-    plt.subplot(4, 1, 1)
+    plt.subplot(3, 1, 1)
     plt.plot(librosa.times_like(f0), f0, label='Pitch (Hz)')
     plt.ylabel('Frequency (Hz)')
     plt.title('Pitch')
 
     # Plot loudness
-    plt.subplot(4, 1, 2)
+    plt.subplot(3, 1, 2)
     plt.plot(times, loudness[0], label='Loudness (dB)')
     plt.ylabel('Loudness (dB)')
     plt.title('Loudness')
 
     # Plot speaking rate
-    plt.subplot(4, 1, 3)
+    plt.subplot(3, 1, 3)
     plt.plot(np.arange(num_segments) + 1, speaking_rates, marker='o', linestyle='-')
     plt.xlabel('Minute')
     plt.ylabel('Speaking Rate (words per minute)')
     plt.title('Speaking Rate')
 
-    # Show the plot
-    plt.tight_layout()
-    
+    # Remove extra space
+    plt.tight_layout(pad=1.0)  # Adjust the padding
 
-     # Save the plot
+    # Save the plot
     now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     save_path = f"C:/Users/Windows10/Desktop/xampp/htdocs/pcs/audiographs/graph_{now}.png"
     relative_path = f"../audiographs/graph_{now}.png"
-    
     try:
         plt.savefig(save_path)
         print(relative_path)
