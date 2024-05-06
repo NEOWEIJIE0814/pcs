@@ -3,6 +3,10 @@ import librosa
 import numpy as np
 from glob import glob
 import pyloudnorm as pyln
+import assemblyai as aai
+
+#Set up the API endpoint and headers.
+aai.settings.api_key = "66387440eacc419aaedd76a574988d96" 
 
 def extract_features(audio_file):
     # Load audio file
@@ -13,14 +17,21 @@ def extract_features(audio_file):
     pitch_mean = pitches.mean()
 
     # Calculate speech rate (words per minute)
-    # Count number of non-silent frames
-    non_silent_frames = np.count_nonzero(librosa.effects.split(y, top_db=20))
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(audio_file)
 
-    # Estimate speech duration (in minutes)
-    speech_duration = librosa.get_duration(y=y, sr=sr)
-
-    # Calculate speech rate
-    speaking_rate = non_silent_frames / speech_duration * 60
+    if transcript.status == aai.TranscriptStatus.error:
+        print(transcript.error)
+    else:
+        transcribed_text = transcript.text
+        words = transcribed_text.split()  # Split text into words
+        num_words = len(words)
+    
+        # Calculate the duration of the audio file (in minutes)
+        audio_duration_minutes = transcript.audio_duration / 60
+    
+        # Calculate the speaking rate (words per minute)
+        speaking_rate = num_words / audio_duration_minutes
 
     # Calculate loudness (mean sound intensity level in dB)
     meter = pyln.Meter(sr)
@@ -29,8 +40,7 @@ def extract_features(audio_file):
     return pitch_mean, speaking_rate, loudness
 
 # Example usage
-audio_files = glob('../speechsample/*.wav')
-audio_file = audio_files[59]
+audio_files = glob('./speechsample/*.wav')
 
 # Create or open the CSV file for writing
 with open('extracted_features.csv', 'w', newline='') as csvfile:
