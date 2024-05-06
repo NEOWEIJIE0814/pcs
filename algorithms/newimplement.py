@@ -7,6 +7,10 @@ import pyloudnorm as pyln
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import pickle
+import assemblyai as aai
+
+#Set up the API endpoint and headers.
+aai.settings.api_key = "66387440eacc419aaedd76a574988d96" 
 
 class SVM_classifier():
     def __init__(self, learning_rate, no_of_iteration, lambda_parameter):
@@ -46,9 +50,22 @@ def extract_features(audio_file):
         y, sr = librosa.load(audio_file, sr=None)
         pitches, _ = librosa.core.piptrack(y=y, sr=sr)
         pitch_mean = pitches.mean()
-        non_silent_frames = np.count_nonzero(librosa.effects.split(y, top_db=20))
-        speech_duration = librosa.get_duration(y=y, sr=sr)
-        speaking_rate = non_silent_frames / speech_duration * 60
+        # Calculate speech rate (words per minute)
+        transcriber = aai.Transcriber()
+        transcript = transcriber.transcribe(audio_file)
+
+        if transcript.status == aai.TranscriptStatus.error:
+            print(transcript.error)
+        else:
+            transcribed_text = transcript.text
+            words = transcribed_text.split()  # Split text into words
+            num_words = len(words)
+    
+            # Calculate the duration of the audio file (in minutes)
+            audio_duration_minutes = transcript.audio_duration / 60
+    
+            # Calculate the speaking rate (words per minute)
+            speaking_rate = num_words / audio_duration_minutes
         meter = pyln.Meter(sr)
         loudness = meter.integrated_loudness(y)
         return np.array([pitch_mean, speaking_rate, loudness])
@@ -74,7 +91,7 @@ if __name__ == "__main__":
     standardized_data = scaler.transform(features) #New add
     features = standardized_data
     target = audio_data['Label']#New add
-    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=0.2, random_state=2) #New add
+    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=0.4, random_state=2) #New add
     classifier = SVM_classifier(learning_rate=0.001, no_of_iteration=1000, lambda_parameter=0.01) #New add
     classifier.fit(X_train, Y_train) #New add
 

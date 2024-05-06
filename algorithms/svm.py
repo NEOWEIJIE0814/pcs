@@ -117,7 +117,7 @@ target = audio_data['Label']
 
 #Train test split function
 #test_size=0.2 mean 20% data become test data
-X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=0.2, random_state=2)
+X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=0.4, random_state=2)
 
 #print(features.shape, X_train.shape, X_train.shape)
 
@@ -156,7 +156,7 @@ print("accuracy score on test data: ", training_data_accuracy)
 #---------------------------------------------------------------
 #--Building a predictive system
 
-input_data = (5.70097876, 269.77405144, -30.33256377)
+input_data = (5.7009788,86.7109634551495,-30.33256376510293)
 
 # --change the input data to numpy array
 
