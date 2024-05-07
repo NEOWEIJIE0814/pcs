@@ -197,6 +197,23 @@
   </footer>
 
   <script>
+    // Function to classify the pitch based on the given ranges
+    function classifyPitch(pitch) {
+        if (pitch >= 24 && pitch <= 30) {
+            return 'Very High';
+        } else if (pitch >= 18 && pitch < 24) {
+            return 'High';
+        } else if (pitch >= 12 && pitch < 18) {
+            return 'Moderate';
+        } else if (pitch >= 6 && pitch < 12) {
+            return 'Low';
+        } else if (pitch >= 0 && pitch < 6) {
+            return 'Very Low';
+        } else {
+            return 'unknown';
+        }
+    }
+
     // Function to fetch audio information from get_audio.php
     function fetchAudioInfo() {
         // Send a GET request to get_audio.php
@@ -237,9 +254,10 @@
                 '<h2>' + audioInfo.results + '</h2>';
         }
 
+
         // Create HTML elements for the right result card (pitch, speaking rate, loudness)
         var rightHtml = '<h2>Audio Features: </h2>' +
-            '<p><strong>i) Pitch: </strong> ' + audioInfo.pitch + '</p>' +
+            '<p><strong>i) Pitch: </strong> ' + audioInfo.pitch + ' (' + classifyPitch(audioInfo.pitch) + ')</p>' +
             '<p><strong>ii) Speaking Rate: </strong> ' + audioInfo.speakingRate + '</p>' +
             '<p><strong>iii) Loudness: </strong> ' + audioInfo.loudness + '</p>';
 
