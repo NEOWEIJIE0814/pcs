@@ -39,12 +39,7 @@ def plot_audio_features(audio_file):
         y, sr = librosa.load(audio_file)
 
         # Extract features
-        features = extract_features(audio_file)
-        if features is None:
-            print("Error: Unable to extract features from audio file.")
-            return
-
-        speaking_rate = features
+        speaking_rate = extract_features(audio_file)
         
         # Extract pitch using librosa's piptrack algorithm
         pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
