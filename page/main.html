@@ -163,13 +163,11 @@
 
     /* Add a custom style for the loading icon */
     .loading-icon {
-      font-size: 100px; /* Adjust the font size to make the icon larger */
-      color: #6A0080; /* Adjust the color of the icon */
-   }
-
-   
-  
-
+      font-size: 100px;
+      /* Adjust the font size to make the icon larger */
+      color: #6A0080;
+      /* Adjust the color of the icon */
+    }
   </style>
 </head>
 
@@ -183,9 +181,16 @@
     <h1>Personality Classification System</h1>
   </header>
 
-
-
   <div id="background">
+    <!-- Guide Card -->
+    <div class="card">
+      <h2>How to Use</h2>
+      <p>1. Click "Upload Speech" to select an audio file.</p>
+      <p>2. Click "Play" to listen to the uploaded audio.</p>
+      <p>3. Optionally, you can record your own speech by clicking "Record Speech".</p>
+      <p>4. Once you're ready, click "Start Analysis" to analyze the audio.</p>
+    </div>
+
     <div class="card">
       <div style="display: flex; align-items: center;">
         <audio id="audioPlayer" controls=""></audio>
@@ -227,7 +232,7 @@
       var selectedFileName = document.getElementById("selectedFileName");
       if (musicFile) {
         selectedFileName.textContent = "Selected File: " + musicFile.name;
-        
+
       } else {
         selectedFileName.textContent = "";
       }
@@ -259,43 +264,48 @@
     let isRecording = false;
 
     function startRecording() {
-  navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(function (stream) {
-      mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.ondataavailable = function (event) {
-        if (event.data.size > 0) {
-          audioChunks.push(event.data);
-        }
-      };
-      mediaRecorder.start();
-    })
-    .catch(function (err) {
-      console.error('Error accessing microphone:', err);
-    });
-}
+      document.querySelector('.record-btn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recording...';
 
-function stopRecording() {
-  if (mediaRecorder && mediaRecorder.state === 'recording') {
-    mediaRecorder.stop();
-    mediaRecorder.onstop = function () {
-      // Convert audio chunks to a single Blob
-      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-      // Set the audio player source to the recorded audio
-      audioPlayer.src = URL.createObjectURL(audioBlob);
-    };
-  } else {
-    console.log('No active recording to stop.');
-  }
-}
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function (stream) {
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = function (event) {
+            if (event.data.size > 0) {
+              audioChunks.push(event.data);
+            }
+          };
+          mediaRecorder.start();
+        })
+        .catch(function (err) {
+          console.error('Error accessing microphone:', err);
+        });
+    }
 
-    
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        mediaRecorder.onstop = function () {
+          // Convert audio chunks to a single Blob
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+          // Set the audio player source to the recorded audio
+          audioPlayer.src = URL.createObjectURL(audioBlob);
 
-    
+          // Reset the record button text
+          document.querySelector('.record-btn').textContent = 'Record Speech';
+        };
+      } else {
+        console.log('No active recording to stop.');
+      }
+    }
+
+
+
+
 
     function startAnalysis() {
       if (audioBlob) {
         // Show loading icon
-       document.getElementById("background").innerHTML = '<i class="fas fa-spinner fa-spin loading-icon"></i><p>Analysis is in progress...<br>Please wait patiently.</p>';
+        document.getElementById("background").innerHTML = '<i class="fas fa-spinner fa-spin loading-icon"></i><p>Analysis is in progress...<br>Please wait patiently.</p>';
         // Send the audio blob to the server
         sendAudioToServer(audioBlob);
 
@@ -308,7 +318,7 @@ function stopRecording() {
       }
       if (audioChunks.length > 0) {
         // Show loading icon
-       document.getElementById("background").innerHTML = '<i class="fas fa-spinner fa-spin loading-icon"></i><p>Analysis is in progress...<br>Please wait patiently.</p>';
+        document.getElementById("background").innerHTML = '<i class="fas fa-spinner fa-spin loading-icon"></i><p>Analysis is in progress...<br>Please wait patiently.</p>';
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
         // Log the size of the audio blob
         console.log('Audio Data Length:', audioBlob.size, 'bytes');
@@ -317,7 +327,7 @@ function stopRecording() {
       } else {
         console.log('No audio to send.');
       }
-      
+
     }
 
     function clearAudio() {
@@ -337,19 +347,19 @@ function stopRecording() {
     }
 
     function sendAudioToServer(audioBlob) {
-      
-        //save audio to file locally
-        const currentDate = new Date();
-        const fileName = `audio_${currentDate.getTime()}.wav`; // File name with current timestamp
-        const filePath = `C:/Users/Windows10/Downloads/${fileName}`; // File path with directory and file name
-        const path = filePath;
-        console.log(path) // print filepath in console
 
-        // Create a new anchor element
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(audioBlob); // Set the href to the audio blob
-        link.download = fileName; // Set the download attribute to the file name
-        link.click(); // Programmatically trigger the download
+      //save audio to file locally
+      const currentDate = new Date();
+      const fileName = `audio_${currentDate.getTime()}.wav`; // File name with current timestamp
+      const filePath = `C:/Users/Windows10/Downloads/${fileName}`; // File path with directory and file name
+      const path = filePath;
+      console.log(path) // print filepath in console
+
+      // Create a new anchor element
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(audioBlob); // Set the href to the audio blob
+      link.download = fileName; // Set the download attribute to the file name
+      link.click(); // Programmatically trigger the download
 
       const formData = new FormData();
       // formData.append('audio', audioBlob);

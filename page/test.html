@@ -37,8 +37,8 @@
     }
 
     header nav.navbar-brand {
-        font-size: 24px;
-        font-weight: bold;
+      font-size: 24px;
+      font-weight: bold;
     }
 
     #logout-container {
@@ -65,90 +65,90 @@
     }
 
     #background {
-        flex: 1;
-        background-color: #f5f5f5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
+      flex: 1;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
     }
 
     footer {
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 10px;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
     }
 
     #background .btn.btn-primary {
-            background-color: #8F00FF;
-            margin-bottom: 10px;
-            color: white;
-            padding: 10px 400px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            border: none;
-            /* Remove button border */
-        }
+      background-color: #8F00FF;
+      margin-bottom: 10px;
+      color: white;
+      padding: 10px 400px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      border: none;
+      /* Remove button border */
+    }
 
-        #background .btn.btn-primary:hover {
-            background-color: #6A0080;
-        }
-        .sound-card,
-        .result-card {
-            
-            /* Adjust the width as needed */
-            padding: 5%;
-            height: auto;
-            text-align: center;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+    #background .btn.btn-primary:hover {
+      background-color: #6A0080;
+    }
+
+    .result-card {
+
+      /* Adjust the width as needed */
+      padding-left: 3%;
+      padding-right: 3%;
+      padding-top: 1%;
+      padding-bottom: 1%;
+      height: auto;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
 
 
+    .result-card:not(:last-child) {
+      margin-right: 4%;
+      /* Adjust the margin as needed */
+    }
 
-        .result-card:not(:last-child) {
-            margin-right: 4%;
-            /* Adjust the margin as needed */
-        }
+    .sound-card h2,
+    .result-card h2 {
+      color: #8F00FF;
+    }
 
-        .sound-card h2,
-        .result-card h2 {
-            color: #8F00FF;
-        }
+    h2 {
+      color: #8F00FF;
+      text-align: center;
+    }
 
-        h2{
-          color: #8F00FF;
-          text-align: center;
-        }
+    .sound-card p,
+    .result-card p {
+      text-align: justify;
+    }
 
-        .sound-card p,
-        .result-card p {
-            text-align: justify;
-        }
+    .sound-card img,
+    .result-card img {
+      height: 200px;
+      margin-bottom: 4px;
+      /* Set image height to 100% to fill the entire height of the card */
+    }
 
-        .sound-card img,
-        .result-card img {
-            height: 200px;
-            margin-bottom: 4px;
-            /* Set image height to 100% to fill the entire height of the card */
-        }
-
-        .card-container {
-            
-            display: flex;
-            justify-content: space-evenly;
-            margin-bottom: 20px;
-            margin-top: 10px;
-        }
-
-</style>
+    .card-container {
+      padding-top: 2%;
+      display: flex;
+      justify-content: space-evenly;
+      margin-bottom: 20px;
+      margin-top: 10px;
+    }
+  </style>
 </header>
 
 <body>
-  
+
   <!-- Header -->
   <header>
     <div id="logout-container" onclick="logout()">
@@ -160,38 +160,38 @@
 
   <div class="card-container">
     <!-- Result Card 1 - First Part -->
-    <div class="result-card">
+    <div class="result-card" style="text-align: center;">
       <h2>Audio Results</h2>
-        
+
     </div>
 
     <div class="result-card">
       <h2>Audio Information</h2>
-      
-      
+
+
+    </div>
+
   </div>
 
-</div>
+  <div class="card-container">
 
-<div class="card-container">
-  
-  <div class="graph-card">
-    <h2>Graph:</h2>
+    <div class="graph-card">
+      <h2>Graph:</h2>
       <img id="graphContainer" src="" alt="Graph">
-    
-    
-</div>
 
-      
+
+    </div>
+
+
   </div>
 
   <div id="background">
     <button class="btn btn-primary" onclick="location.href='main.html'">Upload Other Speech</button>
-</div>
+  </div>
 
-    
 
-    <!-- Footer -->
+
+  <!-- Footer -->
   <footer>
     <p>&copy; 2022 Personality Classification System. All rights reserved.</p>
   </footer>
@@ -199,120 +199,187 @@
   <script>
     // Function to classify the pitch based on the given ranges
     function classifyPitch(pitch) {
-        if (pitch >= 24 && pitch <= 30) {
-            return 'Very High';
-        } else if (pitch >= 18 && pitch < 24) {
-            return 'High';
-        } else if (pitch >= 12 && pitch < 18) {
-            return 'Moderate';
-        } else if (pitch >= 6 && pitch < 12) {
-            return 'Low';
-        } else if (pitch >= 0 && pitch < 6) {
-            return 'Very Low';
-        } else {
-            return 'unknown';
-        }
+      if (pitch >= 24 && pitch <= 30) {
+        return 'Very High';
+      } else if (pitch >= 18 && pitch < 24) {
+        return 'High';
+      } else if (pitch >= 12 && pitch < 18) {
+        return 'Moderate';
+      } else if (pitch >= 6 && pitch < 12) {
+        return 'Low';
+      } else if (pitch >= 0 && pitch < 6) {
+        return 'Very Low';
+      } else {
+        return 'unknown';
+      }
     }
 
-      // Function to classify the speaking rate value
+    // Function to classify the speaking rate value
     function classifySpeakingRate(speakingRate) {
       if (speakingRate >= 180) {
-          return 'Very High';
+        return 'Very High';
       } else if (speakingRate >= 140) {
-          return 'High';
+        return 'High';
       } else if (speakingRate >= 100) {
-          return 'Moderate';
+        return 'Moderate';
       } else if (speakingRate >= 60) {
-          return 'Low';
+        return 'Low';
       } else {
-          return 'Very Low';
+        return 'Very Low';
       }
+    }
+
+    function classifyLoudness(loudness) {
+      if (loudness >= -20) {
+        return 'Very High';
+      } else if (loudness >= -24) {
+        return 'High';
+      } else if (loudness >= -28) {
+        return 'Moderate';
+      } else if (loudness >= -32) {
+        return 'Low';
+      } else {
+        return 'Very Low';
+      }
+    }
+
+    function analyzeOutcome(pitchDegree, speakingRateDegree, loudnessDegree, result) {
+      // Initialize statement variables
+      let pitchStatement = '';
+      let speakingRateStatement = '';
+      let loudnessStatement = '';
+      let resultExplanation = '';
+
+      // Assign statements based on pitchDegree
+      if (pitchDegree === 'Very High') {
+        pitchStatement = 'Your voice sounds consistently very high, like you are speaking loudly or excitedly.';
+      } else if (pitchDegree === 'High') {
+        pitchStatement = 'Your voice tends to be high, suggesting enthusiasm or energy.';
+      } else if (pitchDegree === 'Moderate') {
+        pitchStatement = 'Your voice varies in pitch, giving your speech a natural flow.';
+      } else if (pitchDegree === 'Low') {
+        pitchStatement = 'Your voice is generally low, indicating calmness or relaxation.';
+      } else if (pitchDegree === 'Very Low') {
+        pitchStatement = 'Your voice consistently stays very low, giving a serious or deep impression.';
       }
 
-      function classifyLoudness(loudness) {
-        if (loudness >= -20) {
-            return 'Very High';
-        } else if (loudness >= -24) {
-           return 'High';
-        } else if (loudness >= -28) {
-            return 'Moderate';
-        } else if (loudness >= -32) {
-        return 'Low';
-        } else {
-            return 'Very Low';
-        }
-        }
+      // Assign statements based on speakingRateDegree
+      if (speakingRateDegree === 'Very High') {
+        speakingRateStatement = 'Besides, you speak very quickly, like you are in a hurry or excited.';
+      } else if (speakingRateDegree === 'High') {
+        speakingRateStatement = 'Moreover, you speak fast, delivering your message with energy and enthusiasm.';
+      } else if (speakingRateDegree === 'Moderate') {
+        speakingRateStatement = 'In addition, you speak at a steady pace, making it easy for listeners to follow.';
+      } else if (speakingRateDegree === 'Low') {
+        speakingRateStatement = 'Additionally, you speak slowly, allowing listeners to absorb the information.';
+      } else if (speakingRateDegree === 'Very Low') {
+        speakingRateStatement = 'Furthermore, you speak very slowly, possibly to emphasize or think carefully.';
+      }
+
+      // Assign statements based on loudnessDegree
+      if (loudnessDegree === 'Very High') {
+        loudnessStatement = 'Furthermore, your voice is consistently very loud, like you are shouting or excited/n.';
+      } else if (loudnessDegree === 'High') {
+        loudnessStatement = 'Moreover, your voice tends to be loud, making it clear and easily heard.';
+      } else if (loudnessDegree === 'Moderate') {
+        loudnessStatement = 'Additionally, your voice has moderate volume, sounding pleasant and comfortable.';
+      } else if (loudnessDegree === 'Low') {
+        loudnessStatement = 'Besides, your voice is generally quiet, requiring listeners to pay close attention.';
+      } else if (loudnessDegree === 'Very Low') {
+        loudnessStatement = 'Moreover, your voice is consistently very quiet, requiring careful listening in a quiet environment.';
+      }
+
+      // Assign statement for result (Introvert or Extrovert)
+      if (result.toLowerCase() === 'introvert') {
+        resultExplanation = 'Based on these audio features, <br>it appears that you may lean towards introversion in your personality. ';
+      } else if (result.toLowerCase() === 'extrovert') {
+        resultExplanation = 'Based on these audio features, <br>it seems that you may exhibit characteristics of extroversion in your personality. ';
+      }
+
+      // Combine all statements
+      const combinedStatement = pitchStatement + ' <br>' + speakingRateStatement + ' <br>' + loudnessStatement + '<br> ' + resultExplanation;
+
+      // Return the combined statement
+      return combinedStatement;
+    }
 
     // Function to fetch audio information from get_audio.php
     function fetchAudioInfo() {
-        // Send a GET request to get_audio.php
-        fetch('../php/getaudio.php')
-            .then(response => response.json())
-            .then(data => {
-                // Check if the request was successful
-                if (data.success) {
-                    // Display the audio information on the page
-                    displayAudioInfo(data.audio);
-                } else {
-                    // If the request failed, display an error message
-                    console.error('Failed to fetch audio information:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching audio information:', error);
-            });
+      // Send a GET request to get_audio.php
+      fetch('../php/getaudio.php')
+        .then(response => response.json())
+        .then(data => {
+          // Check if the request was successful
+          if (data.success) {
+            // Display the audio information on the page
+            displayAudioInfo(data.audio);
+          } else {
+            // If the request failed, display an error message
+            console.error('Failed to fetch audio information:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching audio information:', error);
+        });
     }
 
     // Function to display audio information on the page
     function displayAudioInfo(audioInfo) {
-        // Get the container elements for both result cards
-        var leftResultCard = document.querySelectorAll('.result-card')[0];
-        var rightResultCard = document.querySelectorAll('.result-card')[1];
+      // Get the container elements for both result cards
+      var leftResultCard = document.querySelectorAll('.result-card')[0];
+      var rightResultCard = document.querySelectorAll('.result-card')[1];
 
-        // Create HTML elements for the left result card (audio results)
-        var leftHtml = '<h2>Audio Results is: </h2>';
+      // Create HTML elements for the left result card (audio results)
+      var leftHtml = '<h2>Audio Results is: </h2>';
 
-        // Check if the results contain "extrovert"
-        if (audioInfo.results.toLowerCase().includes('extrovert')) {
-            // If "extrovert" is found, display the extrovert image
-            leftHtml += '<img src="../images/extrovert.png" alt="Extrovert Image">' +
-                '<h2>' + audioInfo.results + '</h2>';
-        } else if (audioInfo.results.toLowerCase().includes('introvert')) {
-            // If "introvert" is found, display the introvert image
-            leftHtml += '<img src="../images/introvert.png" alt="Introvert Image">' +
-                '<h2>' + audioInfo.results + '</h2>';
-        }
+      // Check if the results contain "extrovert"
+      if (audioInfo.results.toLowerCase().includes('extrovert')) {
+        // If "extrovert" is found, display the extrovert image
+        leftHtml += '<img src="../images/extrovert.png" alt="Extrovert Image">' +
+          '<h2>' + audioInfo.results + '</h2>';
+      } else if (audioInfo.results.toLowerCase().includes('introvert')) {
+        // If "introvert" is found, display the introvert image
+        leftHtml += '<img src="../images/introvert.png" alt="Introvert Image">' +
+          '<h2>' + audioInfo.results + '</h2>';
+      }
 
+      var pitchdegree = classifyPitch(audioInfo.pitch)
+      var speakingratedegree = classifySpeakingRate(audioInfo.speakingRate)
+      var loudnessdegree = classifyLoudness(audioInfo.loudness)
+      var result = audioInfo.results
 
-        // Create HTML elements for the right result card (pitch, speaking rate, loudness)
-        var rightHtml = '<h2>Audio Features: </h2>' +
-            '<p><strong>i) Pitch: </strong> ' + audioInfo.pitch + ' (' + classifyPitch(audioInfo.pitch) + ')</p>' +
-            '<p><strong>ii) Speaking Rate: </strong> ' + audioInfo.speakingRate + ' (' + classifySpeakingRate(audioInfo.speakingRate) + ')</p>' +
-            '<p><strong>iii) Loudness: </strong> ' + audioInfo.loudness + ' (' + classifyLoudness(audioInfo.loudness) + ')</p>';
+      var explain = analyzeOutcome(pitchdegree, speakingratedegree, loudnessdegree, result)
 
-        // Set the HTML content of the left and right result cards
-        leftResultCard.innerHTML = leftHtml;
-        rightResultCard.innerHTML = rightHtml;
+      // Create HTML elements for the right result card (pitch, speaking rate, loudness)
+      var rightHtml = '<h2>Audio Features: </h2>' +
+        '<p><strong>i) Pitch: </strong> ' + audioInfo.pitch + ' (' + pitchdegree + ')</p>' +
+        '<p><strong>ii) Speaking Rate: </strong> ' + audioInfo.speakingRate + ' (' + speakingratedegree + ')</p>' +
+        '<p><strong>iii) Loudness: </strong> ' + audioInfo.loudness + ' (' + loudnessdegree + ')</p>'
+        + '<p><h2>Explaination: </h2>'+ explain + '</p>';
 
-        // Set the graph image source
-        graphContainer.src = audioInfo.graphPath;
+      // Set the HTML content of the left and right result cards
+      leftResultCard.innerHTML = leftHtml;
+      rightResultCard.innerHTML = rightHtml;
+
+      // Set the graph image source
+      graphContainer.src = audioInfo.graphPath;
     }
 
     function logout() {
-        var confirmLogout = confirm("Are you sure you want to log out?");
+      var confirmLogout = confirm("Are you sure you want to log out?");
 
-        // If the user clicks OK in the confirmation dialog, log out
-        if (confirmLogout) {
-            // Navigate to index.html
-            window.location.href = 'index.html';
-        }
+      // If the user clicks OK in the confirmation dialog, log out
+      if (confirmLogout) {
+        // Navigate to index.html
+        window.location.href = 'index.html';
+      }
     }
 
     // Run the fetchAudioInfo function when the DOM content is loaded
-    document.addEventListener("DOMContentLoaded", function() {
-        fetchAudioInfo();
+    document.addEventListener("DOMContentLoaded", function () {
+      fetchAudioInfo();
     });
-</script>
+  </script>
 </body>
 
 </html>
