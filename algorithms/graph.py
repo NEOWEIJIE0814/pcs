@@ -45,37 +45,38 @@ def plot_audio_features(audio_file):
             return
 
         speaking_rate = features
+        
+        # Extract pitch using librosa's piptrack algorithm
+        pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
 
-        # Extract pitch using librosa's yin algorithm
-        f0, voiced_flag, voiced_probs = librosa.pyin(y, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
-
-        # Compute loudness using extracted features
-        # Compute loudness
-        loudness = librosa.amplitude_to_db(librosa.feature.rms(y=y), ref=np.max)
+        # Extract the pitch track (fundamental frequency)
+        pitch_track = np.nanmean(pitches, axis=0)
 
         # Create time axis
-        times = librosa.times_like(loudness)
+        times = librosa.times_like(pitch_track)
 
         # Plot the graphs
         plt.figure(figsize=(12, 6))  # Reduce the figure height
 
         # Plot pitch
         plt.subplot(3, 1, 1)
-        plt.plot(librosa.times_like(f0), f0, label='Pitch (Hz)')
+        plt.plot(times, pitch_track, label='Pitch Track (Hz)', color='#8F00FF')
         plt.ylabel('Frequency (Hz)')
         plt.title('Pitch')
+        plt.legend()
 
         # Plot loudness
         plt.subplot(3, 1, 2)
-        plt.plot(times, loudness[0], label='Loudness (dB)')
+        plt.plot(times, librosa.amplitude_to_db(librosa.feature.rms(y=y), ref=np.max)[0], label='Loudness (dB)', color='#8F00FF')
         plt.ylabel('Loudness (dB)')
         plt.title('Loudness')
+        plt.legend()
 
         # Plot speaking rate
         plt.subplot(3, 1, 3)
-        plt.axhline(y=speaking_rate, color='r', linestyle='--', label='Speaking Rate (words per minute)')
+        plt.axhline(y=speaking_rate, color='#8F00FF', linestyle='--', label='Speaking Rate (WPM)')
         plt.xlabel('Minute')
-        plt.ylabel('Speaking Rate (words per minute)')
+        plt.ylabel('Speaking Rate (WPM)')
         plt.title('Speaking Rate')
 
         # Remove extra space

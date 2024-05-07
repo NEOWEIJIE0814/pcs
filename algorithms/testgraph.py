@@ -5,11 +5,48 @@ import librosa
 from datetime import datetime
 import pyloudnorm as pyln
 
+import assemblyai as aai
+
+#Set up the API endpoint and headers.
+aai.settings.api_key = "66387440eacc419aaedd76a574988d96" 
+
+def extract_features(audio_file):
+    try:
+        # Transcribe audio to text
+        transcriber = aai.Transcriber()
+        transcript = transcriber.transcribe(audio_file)
+
+        if transcript.status == aai.TranscriptStatus.error:
+            print(transcript.error)
+            return None
+        else:
+            transcribed_text = transcript.text
+            words = transcribed_text.split()  # Split text into words
+            num_words = len(words)
+    
+            # Calculate the duration of the audio file (in minutes)
+            audio_duration_minutes = transcript.audio_duration / 60
+    
+            # Calculate the speaking rate (words per minute)
+            speaking_rate = num_words / audio_duration_minutes
+            return speaking_rate
+    except Exception as e:
+        print("Error extracting features:", e)
+        return None
+
 def plot_audio_features(audio_file):
     try:
         # Load the audio file
         y, sr = librosa.load(audio_file)
 
+        # Extract features
+        features = extract_features(audio_file)
+        if features is None:
+            print("Error: Unable to extract features from audio file.")
+            return
+
+        speaking_rate = features
+        
         # Extract pitch using librosa's piptrack algorithm
         pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
 
@@ -36,16 +73,23 @@ def plot_audio_features(audio_file):
         plt.title('Loudness')
         plt.legend()
 
+        # Plot speaking rate
+        plt.subplot(3, 1, 3)
+        plt.axhline(y=speaking_rate, color='#8F00FF', linestyle='--', label='Speaking Rate (WPM)')
+        plt.xlabel('Minute')
+        plt.ylabel('Speaking Rate (WPM)')
+        plt.title('Speaking Rate')
+        
         # Remove extra space
         plt.tight_layout(pad=1.0)  # Adjust the padding
 
         # Display the plots
-        plt.show()
+        #plt.show()
 
     except Exception as e:
         print("Error processing audio file:", e)
 
 
-audio_file_path = './speechsample/extreduce3.wav'
+audio_file_path = './speechsample/extreduce4.wav'
 
 plot_audio_features(audio_file_path)
