@@ -214,6 +214,35 @@
         }
     }
 
+      // Function to classify the speaking rate value
+    function classifySpeakingRate(speakingRate) {
+      if (speakingRate >= 180) {
+          return 'Very High';
+      } else if (speakingRate >= 140) {
+          return 'High';
+      } else if (speakingRate >= 100) {
+          return 'Moderate';
+      } else if (speakingRate >= 60) {
+          return 'Low';
+      } else {
+          return 'Very Low';
+      }
+      }
+
+      function classifyLoudness(loudness) {
+        if (loudness >= -20) {
+            return 'Very High';
+        } else if (loudness >= -24) {
+           return 'High';
+        } else if (loudness >= -28) {
+            return 'Moderate';
+        } else if (loudness >= -32) {
+        return 'Low';
+        } else {
+            return 'Very Low';
+        }
+        }
+
     // Function to fetch audio information from get_audio.php
     function fetchAudioInfo() {
         // Send a GET request to get_audio.php
@@ -258,8 +287,8 @@
         // Create HTML elements for the right result card (pitch, speaking rate, loudness)
         var rightHtml = '<h2>Audio Features: </h2>' +
             '<p><strong>i) Pitch: </strong> ' + audioInfo.pitch + ' (' + classifyPitch(audioInfo.pitch) + ')</p>' +
-            '<p><strong>ii) Speaking Rate: </strong> ' + audioInfo.speakingRate + '</p>' +
-            '<p><strong>iii) Loudness: </strong> ' + audioInfo.loudness + '</p>';
+            '<p><strong>ii) Speaking Rate: </strong> ' + audioInfo.speakingRate + ' (' + classifySpeakingRate(audioInfo.speakingRate) + ')</p>' +
+            '<p><strong>iii) Loudness: </strong> ' + audioInfo.loudness + ' (' + classifyLoudness(audioInfo.loudness) + ')</p>';
 
         // Set the HTML content of the left and right result cards
         leftResultCard.innerHTML = leftHtml;
