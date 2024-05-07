@@ -16,13 +16,6 @@ def plot_audio_features(audio_file):
         # Extract the pitch track (fundamental frequency)
         pitch_track = np.nanmean(pitches, axis=0)
 
-        # Compute the mean pitch
-        mean_pitch = np.nanmean(pitch_track)
-
-        # Compute loudness using pyloudnorm
-        meter = pyln.Meter(sr)
-        loudness = meter.integrated_loudness(y)
-
         # Create time axis
         times = librosa.times_like(pitch_track)
 
@@ -31,16 +24,14 @@ def plot_audio_features(audio_file):
 
         # Plot pitch
         plt.subplot(3, 1, 1)
-        plt.plot(times, pitch_track, label='Pitch Track (Hz)')
-        plt.axhline(mean_pitch, color='r', linestyle='--', label=f'Mean Pitch: {mean_pitch:.2f} Hz')
+        plt.plot(times, pitch_track, label='Pitch Track (Hz)', color='#8F00FF')
         plt.ylabel('Frequency (Hz)')
         plt.title('Pitch')
         plt.legend()
 
         # Plot loudness
         plt.subplot(3, 1, 2)
-        plt.plot(times, librosa.amplitude_to_db(librosa.feature.rms(y=y), ref=np.max)[0], label='Loudness (dB)')
-        plt.axhline(loudness, color='b', linestyle='--', label=f'Mean Loudness: {loudness:.2f} dB')
+        plt.plot(times, librosa.amplitude_to_db(librosa.feature.rms(y=y), ref=np.max)[0], label='Loudness (dB)', color='#8F00FF')
         plt.ylabel('Loudness (dB)')
         plt.title('Loudness')
         plt.legend()
@@ -55,6 +46,6 @@ def plot_audio_features(audio_file):
         print("Error processing audio file:", e)
 
 
-audio_file_path = './speechsample/extreduce1.wav'
+audio_file_path = './speechsample/extreduce3.wav'
 
 plot_audio_features(audio_file_path)
