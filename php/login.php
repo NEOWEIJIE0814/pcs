@@ -26,22 +26,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Password is correct, set session variables and redirect
                 $_SESSION["user_id"] = $row["userID"];
                 $_SESSION["username"] = $row["username"];
-                echo "Session data: ";
-                var_dump($_SESSION);
-
                 header("Location: ../page/main.html"); // Redirect to your main page
                 exit();
             } else {
                 // Password is incorrect
-                echo "Invalid password. Please try again.";
+                header("Location: ../page/login.html?error=" . urlencode("Invalid password. Please try again."));
+                exit();
             }
         } else {
             // No user found with the provided username or email
-            echo "Invalid username or email. Please try again.";
+            header("Location: ../page/login.html?error=" . urlencode("Invalid username or email. Please try again."));
+            exit();
         }
     } else {
         // Error in the SQL query
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        header("Location: ../page/login.html?error=" . urlencode("Error: " . mysqli_error($conn)));
+        exit();
     }
 
     // Close the database connection
