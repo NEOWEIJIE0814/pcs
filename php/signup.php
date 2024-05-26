@@ -17,9 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $query = "INSERT INTO users (full_name, username, email, age, gender, password) VALUES ('$full_name', '$username', '$email', $age, '$gender', '$password')";
 
     if (mysqli_query($conn, $query)) {
-        echo "Registration successful!";
-        header("Location: ../page/login.html");
-        
+        echo "<script>
+            alert('Registration successful!');
+            window.location.href = '../page/login.html';
+        </script>";
     } else {
         echo "Error: " . $query . "<br>" . mysqli_error($conn);
     }
