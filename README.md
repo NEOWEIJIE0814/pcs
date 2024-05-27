@@ -19,10 +19,10 @@ The PCS project was designed to analyze speech patterns and automatically classi
 
 General Functionalities:
 
-Speech Pattern Analysis: The core functionality of PCS involves the systematic analysis of speech to identify personality traits.
-Advanced Algorithms: The system incorporates machine learning techniques to analyze speech features and classify personalities accurately.
-Automated Classification: By processing extensive datasets of recorded speech, PCS provides reliable and nuanced personality classifications.
-Contribution to Research: The project aims to enhance the field of personality analysis by offering a tool that automates and refines the process of classifying individuals based on their spoken language characteristics.
+i) Speech Pattern Analysis: The core functionality of PCS involves the systematic analysis of speech to identify personality traits.
+ii) Advanced Algorithms: The system incorporates machine learning techniques to analyze speech features and classify personalities accurately.
+iii) Automated Classification: By processing extensive datasets of recorded speech, PCS provides reliable and nuanced personality classifications.
+iv) Contribution to Research: The project aims to enhance the field of personality analysis by offering a tool that automates and refines the process of classifying individuals based on their spoken language characteristics.
 
 Outcome:
 
